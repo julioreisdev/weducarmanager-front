@@ -1,10 +1,16 @@
 import { Button, Card } from "@mui/material";
-import { FC } from "react";
-import { Link } from "react-router-dom";
+import { FC, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { LoginContainer } from "./style";
 import colors from "../../utils/colors";
 
 const ResetPassword: FC = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (localStorage.getItem("weducar_login") === "true") {
+      navigate("/dashboard/inicio");
+    }
+  }, []);
   return (
     <LoginContainer color={colors.main}>
       <Card

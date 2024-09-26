@@ -1,5 +1,5 @@
 import { Card } from "@mui/material";
-import { FC, useContext, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -12,6 +12,12 @@ const Login: FC = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const context = useContext(AuthContext);
+
+  useEffect(() => {
+    if (localStorage.getItem("weducar_login") === "true") {
+      navigate("/dashboard/inicio");
+    }
+  }, []);
 
   function login() {
     localStorage.setItem("weducar_login", "true");
