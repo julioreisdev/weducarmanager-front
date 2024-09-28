@@ -4,18 +4,18 @@ import { Box } from "@mui/material";
 import Favorites from "./Favorites";
 import DashboardIndicatorsCards from "./DashboardIndicatorsCards";
 import styled from "styled-components";
+import CalendarView from "./Calendar";
 
 const Home: FC = () => {
   return (
     <Box sx={{ width: "100%" }}>
       <SectionTitle>Página Inicial</SectionTitle>
-
       <Favorites />
       <DashboardIndicatorsCards />
-
       <GraphsContainer>
         <GraphContainer>
           <SectionSubTitle>Calendário de eventos</SectionSubTitle>
+          <CalendarView />
         </GraphContainer>
         <GraphContainer>
           <SectionSubTitle>Distribuição de alunos</SectionSubTitle>
@@ -30,6 +30,7 @@ const GraphsContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 2rem;
 
   @media (max-width: 720px) {
     flex-direction: column;

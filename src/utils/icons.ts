@@ -12,8 +12,22 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import BusinessIcon from "@mui/icons-material/Business";
 import SettingsIcon from "@mui/icons-material/Settings";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
+import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import DoDisturbOnIcon from "@mui/icons-material/DoDisturbOn";
 
 const Icons = {
+  CheckCircleIcon,
+  DoDisturbOnIcon,
+  NotificationsActiveIcon,
+  FormatListBulletedIcon,
+  CircleNotificationsIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
   SettingsIcon,
   BusinessIcon,
   MenuBookIcon,
