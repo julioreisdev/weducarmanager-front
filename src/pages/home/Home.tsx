@@ -5,6 +5,26 @@ import Favorites from "./Favorites";
 import DashboardIndicatorsCards from "./DashboardIndicatorsCards";
 import styled from "styled-components";
 import CalendarView from "./Calendar";
+import { BarChart } from "@mui/x-charts";
+
+const data = [
+  { class: "7ª Ano - A", value: 21 },
+  { class: "7ª Ano - B", value: 32 },
+  { class: "8ª Ano - A", value: 25 },
+  { class: "8ª Ano - b", value: 37 },
+];
+
+const barChartsParams = {
+  series: [
+    {
+      data: data.map((item) => item.value),
+    },
+  ],
+  xAxis: [
+    { data: data.map((item) => item.class), scaleType: "band", id: "axis1" },
+  ],
+  height: 300,
+};
 
 const Home: FC = () => {
   return (
@@ -19,6 +39,8 @@ const Home: FC = () => {
         </GraphContainer>
         <GraphContainer>
           <SectionSubTitle>Distribuição de alunos</SectionSubTitle>
+          {/* @ts-expect-error type error */}
+          <BarChart sx={{ width: "100%" }} {...barChartsParams} />
         </GraphContainer>
       </GraphsContainer>
     </Box>
