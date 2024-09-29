@@ -9,33 +9,36 @@ const sidebarItems = [
   },
   {
     id: 2,
-    name: "Alunos",
-    route: "alunos",
-    icon: Icons.GroupsIcon,
+    name: "Administrativo",
+    route: "adm",
+    icon: Icons.ManageAccountsIcon,
   },
   {
     id: 3,
-    name: "Gerais",
-    route: "gerais",
-    icon: Icons.PeopleAltIcon,
+    name: "Calendário",
+    route: "calendario",
+    icon: Icons.EditCalendarIcon,
   },
+
   {
     id: 4,
     name: "Escola",
     route: "escola",
     icon: Icons.BusinessIcon,
   },
+
   {
     id: 5,
-    name: "Módulos",
-    route: "modulos",
-    icon: Icons.MenuBookIcon,
+    name: "Alunos",
+    route: "alunos",
+    icon: Icons.GroupsIcon,
   },
+
   {
     id: 6,
-    name: "Ferramentas",
-    route: "ferramentas",
-    icon: Icons.SettingsIcon,
+    name: "Suporte",
+    route: "suporte",
+    icon: Icons.SupportAgentIcon,
   },
 ].map((item) => {
   return {

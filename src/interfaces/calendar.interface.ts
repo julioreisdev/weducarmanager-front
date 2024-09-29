@@ -12,5 +12,12 @@ export interface ICalendarTask {
 interface ICalendarMonth {
   id: number;
   name: string;
-  days: number[];
+  days: ICalendarDay[];
+}
+
+export interface ICalendarDay {
+  day: number;
+  week_day: string;
+  is_holiday: boolean;
+  is_weekend: boolean;
 }

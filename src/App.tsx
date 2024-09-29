@@ -19,11 +19,11 @@ const App: FC = () => {
               <Dashboard>
                 <Routes>
                   <Route path="/inicio" element={<Home />} />
-                  <Route path="/alunos" element={<>Alunos</>} />
-                  <Route path="/gerais" element={<>Gerais</>} />
+                  <Route path="/adm" element={<>Admin</>} />
+                  <Route path="/calendario" element={<>Calendário Escolar</>} />
                   <Route path="/escola" element={<>Escola</>} />
-                  <Route path="/modulos" element={<>Módulos</>} />
-                  <Route path="/ferramentas" element={<>Ferramentas</>} />
+                  <Route path="/alunos" element={<>Alunos</>} />
+                  <Route path="/suporte" element={<>Suporte</>} />
                 </Routes>
               </Dashboard>
             </ProtectedRoute>

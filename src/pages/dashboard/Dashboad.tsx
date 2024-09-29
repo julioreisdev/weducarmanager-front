@@ -135,7 +135,7 @@ const Dashboard: React.FC<IProps> = ({ children }) => {
   }, [currentUrl]);
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", background: colors.gray }}>
       <CssBaseline />
       <AppBar
         sx={{ background: "#fff", color: colors.main }}

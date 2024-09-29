@@ -23,7 +23,7 @@ const barChartsParams = {
   xAxis: [
     { data: data.map((item) => item.class), scaleType: "band", id: "axis1" },
   ],
-  height: 300,
+  height: 325,
 };
 
 const Home: FC = () => {
@@ -35,7 +35,7 @@ const Home: FC = () => {
       <GraphsContainer>
         <GraphContainer>
           <SectionSubTitle>Calendário de eventos</SectionSubTitle>
-          <CalendarView />
+          <CalendarView userSelect={false} action={false} />
         </GraphContainer>
         <GraphContainer>
           <SectionSubTitle>Distribuição de alunos</SectionSubTitle>
@@ -57,6 +57,7 @@ const GraphsContainer = styled.div`
   @media (max-width: 720px) {
     flex-direction: column;
     justify-content: center;
+    gap: 4rem;
   }
 `;
 

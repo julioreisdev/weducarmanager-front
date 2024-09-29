@@ -74,96 +74,126 @@ const TasksModal: FC<IProps> = ({
     >
       <Fade in={open}>
         <Box sx={style}>
-          <FlexRowCenterBet>
-            {" "}
-            <SectionSubTitle style={{ marginBottom: 0 }}>
-              {dateTasks.day} de {dateTasks.monthName}
-            </SectionSubTitle>
-            <IconButton onClick={onClose}>
-              <Icons.DoDisturbOnIcon sx={{ color: colors.red }} />
-            </IconButton>
-          </FlexRowCenterBet>
-          {!tasks.length && "Nada agendado"}
-          {tasks.length !== 0 && (
-            <p style={{ marginBottom: "1rem" }}>{tasks.length} atividade(s)</p>
-          )}
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100%",
-              gap: "1rem",
-              overflowX: "auto",
-              overflowY: "hidden",
-              cursor: "grab",
-              padding: "0.1rem 0.1rem 0.5rem 0.1rem",
-              textAlign: "center",
-              marginBottom: "1rem",
-              "&::-webkit-scrollbar": {
-                height: "3px",
-              },
-            }}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            onWheel={handleWheel}
-          >
-            {tasks.map((t) => (
-              <Task>
-                <h5 style={{ paddingTop: "6px" }}>{t.description}</h5>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
+          <FlexContainer>
+            <FlexItem style={{ minWidth: "60%", maxWidth: "60%" }}>
+              <FlexRowCenterBet>
+                {" "}
+                <SectionSubTitle style={{ marginBottom: 0 }}>
+                  {dateTasks.day} de {dateTasks.monthName}
+                </SectionSubTitle>
+                <IconButton onClick={onClose}>
+                  <Icons.DoDisturbOnIcon sx={{ color: colors.red }} />
+                </IconButton>
+              </FlexRowCenterBet>
+              {!tasks.length && "Nada agendado"}
+              {tasks.length !== 0 && (
+                <p style={{ marginBottom: "1rem" }}>
+                  {tasks.length} atividade(s)
+                </p>
+              )}
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "100%",
+                  gap: "1rem",
+                  overflowX: "auto",
+                  overflowY: "hidden",
+                  cursor: "grab",
+                  padding: "0.1rem 0.1rem 0.5rem 0.1rem",
+                  textAlign: "center",
+                  marginBottom: "0.5rem",
+                  "&::-webkit-scrollbar": {
+                    height: "3px",
+                  },
+                }}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onWheel={handleWheel}
+              >
+                {tasks.map((t) => (
+                  <Task>
+                    <h5 style={{ paddingTop: "6px" }}>{t.description}</h5>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <IconButton onClick={() => removeTask(t.id)}>
+                        <Icons.DoDisturbOnIcon
+                          sx={{ color: colors.red, fontSize: "0.9rem" }}
+                        />
+                      </IconButton>
+                      <IconButton onClick={() => removeTask(t.id)}>
+                        <Icons.CheckCircleIcon
+                          sx={{ color: colors.green, fontSize: "0.9rem" }}
+                        />
+                      </IconButton>
+                    </div>
+                  </Task>
+                ))}
+              </Box>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  addTask(dateTasks.month, dateTasks.day, description);
+                  setDescription("");
+                }}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <AppTextField
+                  label="Tarefa"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                  type="text"
+                  sx={{ width: "78%" }}
+                />
+                <Button
+                  type="submit"
+                  size="small"
+                  variant="contained"
+                  sx={{ backgroundColor: colors.main, padding: "0.5rem" }}
                 >
-                  <IconButton onClick={() => removeTask(t.id)}>
-                    <Icons.DoDisturbOnIcon
-                      sx={{ color: colors.red, fontSize: "0.9rem" }}
-                    />
-                  </IconButton>
-                  <IconButton onClick={() => removeTask(t.id)}>
-                    <Icons.CheckCircleIcon
-                      sx={{ color: colors.green, fontSize: "0.9rem" }}
-                    />
-                  </IconButton>
-                </div>
-              </Task>
-            ))}
-          </Box>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              addTask(dateTasks.month, dateTasks.day, description);
-              setDescription("");
-            }}
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <AppTextField
-              label="Tarefa"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-              type="password"
-              sx={{ width: "88%" }}
-            />
-            <Button
-              type="submit"
-              size="small"
-              variant="contained"
-              sx={{ backgroundColor: colors.main, padding: "0.5rem" }}
-            >
-              Add
-            </Button>
-          </form>
+                  Add
+                </Button>
+              </form>
+            </FlexItem>
+            <FlexItem style={{ minWidth: "40%", maxWidth: "40%" }}>
+              tags
+            </FlexItem>
+          </FlexContainer>
         </Box>
       </Fade>
     </Modal>
   );
 };
+
+const FlexItem = styled.div`
+  @media (max-width: 720px) {
+    width: 100% !important;
+    min-width: 100% !important;
+    min-width: 100% !important;
+  }
+`;
+
+const FlexContainer = styled.div`
+  width: center;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  @media (max-width: 720px) {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+`;
 
 const Task = styled.div`
   flex-shrink: 0;
@@ -172,9 +202,10 @@ const Task = styled.div`
   align-items: flex-start;
   justify-content: space-between;
   border: 2px solid #682ee3;
+  background-color: #682ee3;
   padding: 0.5rem;
   border-radius: 5px;
-  color: #682ee3;
+  color: #fff;
 `;
 
 export default TasksModal;

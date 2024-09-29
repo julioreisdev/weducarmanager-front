@@ -1,112 +1,19 @@
 import { FC, useCallback, useMemo, useState } from "react";
-import { TCalendar, TCalendarTasks } from "../../interfaces/calendar.interface";
+import { TCalendarTasks } from "../../interfaces/calendar.interface";
 import colors from "../../utils/colors";
-import { IconButton } from "@mui/material";
+import { Card, IconButton } from "@mui/material";
 import Icons from "../../utils/icons";
 import { FlexRowCenterBet } from "../../components/style";
 import styled from "styled-components";
 import TasksModal from "./TasksModal";
+import { calendar } from "../../utils/calendar";
 
-const calendar: TCalendar = [
-  {
-    id: 1,
-    name: "Janeiro",
-    days: [
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-    ],
-  },
-  {
-    id: 2,
-    name: "Fevereiro",
-    days: [
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24, 25, 26, 27, 28, 29,
-    ],
-  },
-  {
-    id: 3,
-    name: "Março",
-    days: [
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-    ],
-  },
-  {
-    id: 4,
-    name: "Abril",
-    days: [
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24, 25, 26, 27, 28, 29, 30,
-    ],
-  },
-  {
-    id: 5,
-    name: "Maio",
-    days: [
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-    ],
-  },
-  {
-    id: 6,
-    name: "Junho",
-    days: [
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24, 25, 26, 27, 28, 29, 30,
-    ],
-  },
-  {
-    id: 7,
-    name: "Julho",
-    days: [
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-    ],
-  },
-  {
-    id: 8,
-    name: "Agosto",
-    days: [
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-    ],
-  },
-  {
-    id: 9,
-    name: "Setembro",
-    days: [
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24, 25, 26, 27, 28, 29, 30,
-    ],
-  },
-  {
-    id: 10,
-    name: "Outubro",
-    days: [
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-    ],
-  },
-  {
-    id: 11,
-    name: "Novembro",
-    days: [
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24, 25, 26, 27, 28, 29, 30,
-    ],
-  },
-  {
-    id: 12,
-    name: "Dezembro",
-    days: [
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-    ],
-  },
-];
+interface IProps {
+  action: boolean;
+  userSelect: boolean;
+}
 
-const CalendarView: FC = () => {
+const CalendarView: FC<IProps> = ({ action, userSelect }) => {
   const date = new Date();
   const today = date.getDate();
   const thisMonth = date.getMonth() + 1;
@@ -193,7 +100,15 @@ const CalendarView: FC = () => {
   }
 
   return (
-    <div>
+    <Card
+      sx={{
+        width: "100%",
+        backgroundColor: "#fff",
+        borderRadius: "5px",
+        padding: "0.5rem",
+        userSelect: !userSelect ? "none" : "",
+      }}
+    >
       <FlexRowCenterBet>
         <h5 style={{ color: colors.main }}>{currentMonth?.name}</h5>
         <div>
@@ -206,25 +121,175 @@ const CalendarView: FC = () => {
         </div>
       </FlexRowCenterBet>
       <CalendarContainer>
-        {currentMonth?.days.map((day) => (
-          <CalendarDay
-            key={day}
-            onClick={() => {
-              setSelectedDay({ month, day });
-              setTasksModalIsOpen(true);
-            }}
+        <CalendarDay
+          style={{
+            backgroundColor: "#fff",
+          }}
+        >
+          <div
             style={{
-              backgroundColor: isToday(month, day) ? colors.main : "",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
             <FlexRowCenterBet>
-              <p style={{ color: isToday(month, day) ? "#fff" : "#000" }}>
-                {day}
-              </p>
-              {dayHaveTask(month, day) && (
-                <Icons.NotificationsActiveIcon sx={{ color: colors.orange }} />
-              )}
+              <p style={{ color: colors.red }}>D</p>
             </FlexRowCenterBet>
+          </div>
+        </CalendarDay>
+        <CalendarDay
+          style={{
+            backgroundColor: "#fff",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <FlexRowCenterBet>
+              <p style={{ color: colors.main }}>S</p>
+            </FlexRowCenterBet>
+          </div>
+        </CalendarDay>
+        <CalendarDay
+          style={{
+            backgroundColor: "#fff",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <FlexRowCenterBet>
+              <p style={{ color: colors.main }}>T</p>
+            </FlexRowCenterBet>
+          </div>
+        </CalendarDay>
+        <CalendarDay
+          style={{
+            backgroundColor: "#fff",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <FlexRowCenterBet>
+              <p style={{ color: colors.main }}>Q</p>
+            </FlexRowCenterBet>
+          </div>
+        </CalendarDay>
+        <CalendarDay
+          style={{
+            backgroundColor: "#fff",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <FlexRowCenterBet>
+              <p style={{ color: colors.main }}>Q</p>
+            </FlexRowCenterBet>
+          </div>
+        </CalendarDay>
+        <CalendarDay
+          style={{
+            backgroundColor: "#fff",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <FlexRowCenterBet>
+              <p style={{ color: colors.main }}>S</p>
+            </FlexRowCenterBet>
+          </div>
+        </CalendarDay>
+        <CalendarDay
+          style={{
+            backgroundColor: "#fff",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <FlexRowCenterBet>
+              <p style={{ color: colors.red }}>S</p>
+            </FlexRowCenterBet>
+          </div>
+        </CalendarDay>
+      </CalendarContainer>
+      <CalendarContainer>
+        {currentMonth?.days.map((day) => (
+          <CalendarDay
+            key={month + day.day + day.week_day}
+            onClick={() => {
+              if (action && day.day) {
+                setSelectedDay({ month, day: day.day });
+                setTasksModalIsOpen(true);
+              }
+            }}
+            style={{
+              backgroundColor: !day.day
+                ? ""
+                : isToday(month, day.day)
+                ? colors.main
+                : day.is_holiday
+                ? colors.orange
+                : "",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <FlexRowCenterBet>
+                <p style={{ color: isToday(month, day.day) ? "#fff" : "#000" }}>
+                  {day.day ? day.day : ""}
+                </p>
+                {dayHaveTask(month, day.day) && (
+                  <Icons.NotificationsActiveIcon
+                    sx={{
+                      color: colors.red,
+                      fontSize: "0.8rem",
+                      marginLeft: "0.1rem",
+                    }}
+                  />
+                )}
+              </FlexRowCenterBet>
+            </div>
           </CalendarDay>
         ))}
       </CalendarContainer>
@@ -240,7 +305,7 @@ const CalendarView: FC = () => {
         removeTask={removeTask}
         addTask={addTask}
       />
-    </div>
+    </Card>
   );
 };
 
@@ -249,13 +314,11 @@ const CalendarContainer = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  border: 2px solid #682ee3;
-  border-radius: 5px;
   padding: 0.5rem;
 `;
 
 const CalendarDay = styled.div`
-  width: 20%;
+  width: 14%;
   padding: 0.3rem;
   border-radius: 5px;
   cursor: pointer;

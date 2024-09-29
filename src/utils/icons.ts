@@ -19,8 +19,16 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DoDisturbOnIcon from "@mui/icons-material/DoDisturbOn";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import EditCalendarIcon from "@mui/icons-material/EditCalendar";
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 
 const Icons = {
+  SupportAgentIcon,
+  EditCalendarIcon,
+  ManageAccountsIcon,
+  AdminPanelSettingsIcon,
   CheckCircleIcon,
   DoDisturbOnIcon,
   NotificationsActiveIcon,
