@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 import { SectionSubTitle } from "../../components/style";
 import FavoriteCard from "../../components/FavoriteCard";
 import colors from "../../utils/colors";
@@ -32,6 +32,7 @@ const favorites = [
 
 const Favorites: FC = () => {
   const [isHovered, setIsHovered] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -41,17 +42,34 @@ const Favorites: FC = () => {
     setIsHovered(false);
   };
 
-  const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
-    if (isHovered) {
-      event.preventDefault();
-      event.currentTarget.scrollLeft += event.deltaY;
+  useEffect(() => {
+    const handleWheel = (event: WheelEvent) => {
+      if (isHovered) {
+        event.preventDefault();
+        if (scrollRef.current) {
+          scrollRef.current.scrollLeft += event.deltaY;
+        }
+      }
+    };
+
+    const scrollElement = scrollRef.current;
+    if (scrollElement) {
+      scrollElement.addEventListener("wheel", handleWheel, { passive: false });
     }
-  };
+
+    return () => {
+      if (scrollElement) {
+        scrollElement.removeEventListener("wheel", handleWheel);
+      }
+    };
+  }, [isHovered]);
+
   return (
     <Box sx={{ width: "100%" }}>
       <SectionSubTitle>Favoritos</SectionSubTitle>
 
       <Box
+        ref={scrollRef}
         sx={{
           display: "flex",
           alignItems: "center",
@@ -70,7 +88,6 @@ const Favorites: FC = () => {
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        onWheel={handleWheel}
       >
         {favorites.map((item) => (
           <Box

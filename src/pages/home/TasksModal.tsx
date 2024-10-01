@@ -54,7 +54,6 @@ const TasksModal: FC<IProps> = ({
 
   const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
     if (isHovered) {
-      event.preventDefault();
       event.currentTarget.scrollLeft += event.deltaY;
     }
   };

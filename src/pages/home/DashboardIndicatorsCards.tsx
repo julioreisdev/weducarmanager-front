@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 import { SectionSubTitle } from "../../components/style";
 import colors from "../../utils/colors";
 import { Box } from "@mui/material";
@@ -33,6 +33,7 @@ const indicators = [
 
 const DashboardIndicatorsCards: FC = () => {
   const [isHovered, setIsHovered] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -42,17 +43,34 @@ const DashboardIndicatorsCards: FC = () => {
     setIsHovered(false);
   };
 
-  const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
-    if (isHovered) {
-      event.preventDefault();
-      event.currentTarget.scrollLeft += event.deltaY;
+  useEffect(() => {
+    const handleWheel = (event: WheelEvent) => {
+      if (isHovered) {
+        event.preventDefault();
+        if (scrollRef.current) {
+          scrollRef.current.scrollLeft += event.deltaY;
+        }
+      }
+    };
+
+    const scrollElement = scrollRef.current;
+    if (scrollElement) {
+      scrollElement.addEventListener("wheel", handleWheel, { passive: false });
     }
-  };
+
+    return () => {
+      if (scrollElement) {
+        scrollElement.removeEventListener("wheel", handleWheel);
+      }
+    };
+  }, [isHovered]);
+
   return (
     <Box sx={{ width: "100%" }}>
       <SectionSubTitle>Dashboard</SectionSubTitle>
 
       <Box
+        ref={scrollRef}
         sx={{
           display: "flex",
           alignItems: "center",
@@ -71,7 +89,6 @@ const DashboardIndicatorsCards: FC = () => {
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        onWheel={handleWheel}
       >
         {indicators.map((item) => (
           <Box

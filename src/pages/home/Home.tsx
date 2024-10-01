@@ -6,6 +6,7 @@ import DashboardIndicatorsCards from "./DashboardIndicatorsCards";
 import styled from "styled-components";
 import CalendarView from "./Calendar";
 import { BarChart } from "@mui/x-charts";
+import InstructorIndicatores from "./InstructorIndicatores";
 
 const data = [
   { class: "7ª Ano - A", value: 21 },
@@ -43,6 +44,7 @@ const Home: FC = () => {
           <BarChart sx={{ width: "100%" }} {...barChartsParams} />
         </GraphContainer>
       </GraphsContainer>
+      <InstructorIndicatores />
     </Box>
   );
 };
