@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { SectionSubTitle, SectionTitle } from "../../components/style";
-import { Box } from "@mui/material";
+import { Box, Card } from "@mui/material";
 import Favorites from "./Favorites";
 import DashboardIndicatorsCards from "./DashboardIndicatorsCards";
 import styled from "styled-components";
@@ -44,7 +44,20 @@ const Home: FC = () => {
           <BarChart sx={{ width: "100%" }} {...barChartsParams} />
         </GraphContainer>
       </GraphsContainer>
-      <InstructorIndicatores />
+      <Card
+        sx={{
+          width: "100%",
+          backgroundColor: "#fff",
+          borderRadius: "5px",
+          padding: "0.5rem",
+          marginTop: "4rem",
+        }}
+      >
+        <div style={{ width: "100%", maxHeight: "500px", overflowY: "auto" }}>
+          <SectionSubTitle>Indicadores por professor(a)</SectionSubTitle>
+          <InstructorIndicatores />
+        </div>
+      </Card>
     </Box>
   );
 };
