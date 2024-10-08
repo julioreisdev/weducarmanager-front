@@ -39,3 +39,8 @@ export const SectionSubTitle = styled.p`
   margin-bottom: 1rem;
   font-weight: 500;
 `;
+
+export const Disabled = styled.div`
+  opacity: 0.3;
+  pointer-events: none;
+`;

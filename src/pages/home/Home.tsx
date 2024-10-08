@@ -1,5 +1,9 @@
 import { FC } from "react";
-import { SectionSubTitle, SectionTitle } from "../../components/style";
+import {
+  Disabled,
+  SectionSubTitle,
+  SectionTitle,
+} from "../../components/style";
 import { Box, Card } from "@mui/material";
 import Favorites from "./Favorites";
 import DashboardIndicatorsCards from "./DashboardIndicatorsCards";
@@ -31,17 +35,22 @@ const Home: FC = () => {
   return (
     <Box sx={{ width: "100%" }}>
       <SectionTitle>Página Inicial</SectionTitle>
-      <Favorites />
-      <DashboardIndicatorsCards />
+      <Disabled>
+        {" "}
+        <Favorites />
+        <DashboardIndicatorsCards />
+      </Disabled>
       <GraphsContainer>
         <GraphContainer>
           <SectionSubTitle>Calendário de eventos</SectionSubTitle>
           <CalendarView userSelect={false} action={false} />
         </GraphContainer>
         <GraphContainer>
-          <SectionSubTitle>Distribuição de alunos</SectionSubTitle>
-          {/* @ts-expect-error type error */}
-          <BarChart sx={{ width: "100%" }} {...barChartsParams} />
+          <Disabled>
+            <SectionSubTitle>Distribuição de alunos</SectionSubTitle>
+            {/* @ts-expect-error type error */}
+            <BarChart sx={{ width: "100%" }} {...barChartsParams} />
+          </Disabled>
         </GraphContainer>
       </GraphsContainer>
       <Card
@@ -54,8 +63,10 @@ const Home: FC = () => {
         }}
       >
         <div style={{ width: "100%", maxHeight: "500px", overflowY: "auto" }}>
-          <SectionSubTitle>Indicadores por professor(a)</SectionSubTitle>
-          <InstructorIndicatores />
+          <Disabled>
+            <SectionSubTitle>Indicadores por professor(a)</SectionSubTitle>
+            <InstructorIndicatores />
+          </Disabled>
         </div>
       </Card>
     </Box>

@@ -7,25 +7,25 @@ import DashboardIndicatorCard from "../../components/DashboardIndicatorCard";
 const indicators = [
   {
     name: "Alunos Ativos",
-    value: 320,
+    value: 0,
     bgColor: colors.green,
     url: "/public/alunos.png",
   },
   {
     name: "Professores",
-    value: 15,
+    value: 0,
     bgColor: colors.blue,
     url: "/public/professor.png",
   },
   {
     name: "Turmas",
-    value: 10,
+    value: 0,
     bgColor: colors.orange,
     url: "/public/turmas.png",
   },
   {
     name: "Transferências",
-    value: 10,
+    value: 0,
     bgColor: colors.red,
     url: "/public/transferencia.png",
   },
