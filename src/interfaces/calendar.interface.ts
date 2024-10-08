@@ -2,6 +2,16 @@ export type TCalendar = ICalendarMonth[];
 
 export type TCalendarTasks = ICalendarTask[];
 
+export enum TagType {
+  formations_and_plans = "formations_and_plans",
+  school_day = "school_day",
+  school_saturday = "school_saturday",
+  assessments = "assessments",
+  remedial_classes = "remedial_classes",
+  holidays = "holidays",
+  collective_vacation = "collective_vacation",
+}
+
 export interface ICalendarTask {
   id: number;
   month: number;
@@ -9,7 +19,7 @@ export interface ICalendarTask {
   description: string;
 }
 
-interface ICalendarMonth {
+export interface ICalendarMonth {
   id: number;
   name: string;
   days: ICalendarDay[];
@@ -20,4 +30,5 @@ export interface ICalendarDay {
   week_day: string;
   is_holiday: boolean;
   is_weekend: boolean;
+  tag: TagType | "";
 }

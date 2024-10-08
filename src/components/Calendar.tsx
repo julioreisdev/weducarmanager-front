@@ -1,12 +1,18 @@
-import { FC, useCallback, useMemo, useState } from "react";
-import { TCalendarTasks } from "../../interfaces/calendar.interface";
-import colors from "../../utils/colors";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  ICalendarDay,
+  ICalendarMonth,
+  TagType,
+  TCalendar,
+  TCalendarTasks,
+} from "../interfaces/calendar.interface";
+import colors from "../utils/colors";
 import { Card, IconButton } from "@mui/material";
-import Icons from "../../utils/icons";
-import { FlexRowCenterBet } from "../../components/style";
+import Icons from "../utils/icons";
+import { FlexRowCenterBet } from "./style";
 import styled from "styled-components";
-import TasksModal from "./TasksModal";
-import { calendar } from "../../utils/calendar";
+import { calendar } from "../utils/calendar";
+import DayDetailsModal from "../pages/home/DayDetailsModal";
 
 interface IProps {
   action: boolean;
@@ -24,19 +30,51 @@ const CalendarView: FC<IProps> = ({ action, userSelect }) => {
     day: number;
   }>();
 
+  const [day, setDay] = useState<ICalendarDay>();
+
   const [month, setMonth] = useState(() => {
     return Number(date.getMonth()) + 1;
   });
 
+  const [dataCalendar, setDataCalendar] = useState<TCalendar>([]);
+
+  useEffect(() => {
+    setDataCalendar(calendar);
+  }, []);
+
+  function updateCalendar(updatedDay?: ICalendarDay, monthId?: number) {
+    const updatedMonth = dataCalendar.find((m) => m.id === monthId);
+    const updatedDataMonth: ICalendarMonth = {
+      id: updatedMonth?.id || 0,
+      name: updatedMonth?.name || "",
+      days:
+        updatedMonth?.days.map((d) => {
+          if (d.day === updatedDay?.day) {
+            return updatedDay;
+          }
+          return d;
+        }) || [],
+    };
+    setDataCalendar((prev) =>
+      prev.map((m) => {
+        if (m.id === updatedDataMonth.id) {
+          return updatedDataMonth;
+        }
+        return m;
+      })
+    );
+    setDay(updatedDay);
+  }
+
   const currentMonth = useMemo(() => {
-    return calendar.find((item) => item.id === month);
-  }, [month]);
+    return dataCalendar.find((item) => item.id === month);
+  }, [month, dataCalendar]);
 
   const isToday = useCallback(
     (monthNumber: number, dayNumber: number) => {
       return monthNumber === thisMonth && dayNumber === today;
     },
-    [month]
+    [month, dataCalendar]
   );
 
   const [tasks, setTasks] = useState<TCalendarTasks>([
@@ -81,7 +119,7 @@ const CalendarView: FC<IProps> = ({ action, userSelect }) => {
     return tasks.filter(
       (t) => t.month === selectedDay?.month && t.day === selectedDay.day
     );
-  }, [selectedDay, tasks]);
+  }, [selectedDay, tasks, dataCalendar]);
 
   function changeNextMonth() {
     if (month === 12) {
@@ -97,6 +135,55 @@ const CalendarView: FC<IProps> = ({ action, userSelect }) => {
       return;
     }
     setMonth((prev) => prev - 1);
+  }
+
+  function dayColor(day: ICalendarDay) {
+    if (!day.day) {
+      return "";
+    }
+    if (isToday(month, day.day)) {
+      return colors.main;
+    }
+    if (
+      day.is_holiday ||
+      day.tag === TagType.holidays ||
+      day.tag === TagType.collective_vacation
+    ) {
+      return colors.red;
+    }
+
+    if (day.tag === TagType.school_day || day.tag === TagType.school_saturday) {
+      return colors.green;
+    }
+
+    if (
+      day.tag === TagType.assessments ||
+      day.tag === TagType.remedial_classes
+    ) {
+      return colors.orange;
+    }
+
+    if (day.tag === TagType.formations_and_plans) {
+      return colors.blue;
+    }
+
+    return "";
+  }
+
+  function dayTextColor(day: ICalendarDay) {
+    if (dayColor(day) === "") {
+      return colors.main;
+    }
+
+    return "#fff";
+  }
+
+  function notifyColor(day: ICalendarDay) {
+    if (isToday(month, day.day) || day.is_holiday) {
+      return colors.orange;
+    }
+
+    return colors.red;
   }
 
   return (
@@ -255,17 +342,12 @@ const CalendarView: FC<IProps> = ({ action, userSelect }) => {
             onClick={() => {
               if (action && day.day) {
                 setSelectedDay({ month, day: day.day });
+                setDay(day);
                 setTasksModalIsOpen(true);
               }
             }}
             style={{
-              backgroundColor: !day.day
-                ? ""
-                : isToday(month, day.day)
-                ? colors.main
-                : day.is_holiday
-                ? colors.orange
-                : "",
+              backgroundColor: dayColor(day),
             }}
           >
             <div
@@ -276,13 +358,13 @@ const CalendarView: FC<IProps> = ({ action, userSelect }) => {
               }}
             >
               <FlexRowCenterBet>
-                <p style={{ color: isToday(month, day.day) ? "#fff" : "#000" }}>
+                <p style={{ color: dayTextColor(day) }}>
                   {day.day ? day.day : ""}
                 </p>
                 {dayHaveTask(month, day.day) && (
                   <Icons.NotificationsActiveIcon
                     sx={{
-                      color: colors.red,
+                      color: notifyColor(day),
                       fontSize: "0.8rem",
                       marginLeft: "0.1rem",
                     }}
@@ -293,7 +375,8 @@ const CalendarView: FC<IProps> = ({ action, userSelect }) => {
           </CalendarDay>
         ))}
       </CalendarContainer>
-      <TasksModal
+      <DayDetailsModal
+        updateCalendar={updateCalendar}
         open={tasksModalIsOpen}
         onClose={() => setTasksModalIsOpen(false)}
         tasks={dayTasks}
@@ -304,6 +387,7 @@ const CalendarView: FC<IProps> = ({ action, userSelect }) => {
         }}
         removeTask={removeTask}
         addTask={addTask}
+        day={day}
       />
     </Card>
   );
@@ -320,7 +404,7 @@ const CalendarContainer = styled.div`
 const CalendarDay = styled.div`
   width: 14%;
   padding: 0.3rem;
-  border-radius: 5px;
+  font-weight: bold;
   cursor: pointer;
 
   &:hover {

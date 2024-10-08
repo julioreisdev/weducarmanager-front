@@ -5,6 +5,7 @@ import ResetPassword from "./pages/login/ResetPassword";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/dashboard/Dashboad";
 import Home from "./pages/home/Home";
+import Calendar from "./pages/calendar/Calendar";
 
 const App: FC = () => {
   return (
@@ -20,7 +21,7 @@ const App: FC = () => {
                 <Routes>
                   <Route path="/inicio" element={<Home />} />
                   <Route path="/adm" element={<>Admin</>} />
-                  <Route path="/calendario" element={<>Calendário Escolar</>} />
+                  <Route path="/calendario" element={<Calendar />} />
                   <Route path="/escola" element={<>Escola</>} />
                   <Route path="/alunos" element={<>Alunos</>} />
                   <Route path="/suporte" element={<>Suporte</>} />

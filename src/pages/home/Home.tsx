@@ -4,7 +4,7 @@ import { Box, Card } from "@mui/material";
 import Favorites from "./Favorites";
 import DashboardIndicatorsCards from "./DashboardIndicatorsCards";
 import styled from "styled-components";
-import CalendarView from "./Calendar";
+import CalendarView from "../../components/Calendar";
 import { BarChart } from "@mui/x-charts";
 import InstructorIndicatores from "./InstructorIndicatores";
 

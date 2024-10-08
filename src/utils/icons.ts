@@ -23,8 +23,12 @@ import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import EditCalendarIcon from "@mui/icons-material/EditCalendar";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 const Icons = {
+  CheckBoxOutlineBlankIcon,
+  CheckBoxIcon,
   SupportAgentIcon,
   EditCalendarIcon,
   ManageAccountsIcon,
