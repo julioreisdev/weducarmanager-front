@@ -170,87 +170,89 @@ const Dashboard: React.FC<IProps> = ({ children }) => {
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <div>
-              <h4>W-Educar</h4>
-              <h5>Sistema de gestão Escolar</h5>
-            </div>
-            <IconButton onClick={handleDrawerClose}>
-              <MenuIcon sx={{ color: "#fff" }} />
-            </IconButton>
-          </div>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {sidebarItems.map((item) => (
-            <ListItem
-              onClick={() => navigate(`${item.route}`)}
-              key={item.id}
-              disablePadding
-              sx={{ display: "block" }}
+        <div className="sidebar">
+          <DrawerHeader>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
             >
-              <ListItemButton
-                sx={[
-                  {
-                    minHeight: 48,
-                    px: 2.5,
-                    background:
-                      item.id === sidebarItemOpen?.id ? "#00000020" : "",
-                  },
-                  open
-                    ? {
-                        justifyContent: "initial",
-                      }
-                    : {
-                        justifyContent: "center",
-                      },
-                ]}
+              <div>
+                <h4>W-Educar</h4>
+                <h5>Sistema de gestão Escolar</h5>
+              </div>
+              <IconButton onClick={handleDrawerClose}>
+                <MenuIcon sx={{ color: "#fff" }} />
+              </IconButton>
+            </div>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            {sidebarItems.map((item) => (
+              <ListItem
+                onClick={() => navigate(`${item.route}`)}
+                key={item.id}
+                disablePadding
+                sx={{ display: "block" }}
               >
-                <ListItemIcon
+                <ListItemButton
                   sx={[
                     {
-                      minWidth: 0,
-                      justifyContent: "center",
+                      minHeight: 48,
+                      px: 2.5,
+                      background:
+                        item.id === sidebarItemOpen?.id ? "#00000020" : "",
                     },
                     open
                       ? {
-                          mr: 3,
+                          justifyContent: "initial",
                         }
                       : {
-                          mr: "auto",
+                          justifyContent: "center",
                         },
                   ]}
                 >
-                  {createElement(item.icon, {
-                    sx: {
-                      color: "#fff",
-                    },
-                  })}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.name}
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+                  <ListItemIcon
+                    sx={[
+                      {
+                        minWidth: 0,
+                        justifyContent: "center",
+                      },
+                      open
+                        ? {
+                            mr: 3,
+                          }
+                        : {
+                            mr: "auto",
+                          },
+                    ]}
+                  >
+                    {createElement(item.icon, {
+                      sx: {
+                        color: "#fff",
+                      },
+                    })}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={item.name}
+                    sx={[
+                      open
+                        ? {
+                            opacity: 1,
+                          }
+                        : {
+                            opacity: 0,
+                          },
+                    ]}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </div>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3, width: "20%" }}>
         <DrawerHeader />

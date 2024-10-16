@@ -1,4 +1,4 @@
-import { Card } from "@mui/material";
+import { Alert, Card, Snackbar } from "@mui/material";
 import { FC, useContext, useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,12 +6,16 @@ import { AuthContext } from "../../contexts/AuthContext";
 import colors from "../../utils/colors";
 import { LoginContainer } from "./style";
 import AppTextField from "../../components/AppTextField";
+import { api } from "../../utils/api";
+import { ILogin } from "../../interfaces/auth.interface";
 
 const Login: FC = () => {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const context = useContext(AuthContext);
+  const [openError, setOpenError] = useState(false);
+  const [snackMessage, setSnackMessage] = useState("");
 
   useEffect(() => {
     if (localStorage.getItem("weducar_login") === "true") {
@@ -20,10 +24,19 @@ const Login: FC = () => {
   }, []);
 
   function login() {
-    localStorage.setItem("weducar_login", "true");
-    localStorage.setItem("username", user);
-    context?.login();
-    navigate("/dashboard/inicio");
+    api()
+      .post<ILogin>("/entrar/", { usuario: user, senha: password })
+      .then((res) => {
+        localStorage.setItem("authorization", res.data.token);
+        localStorage.setItem("weducar_login", "true");
+        localStorage.setItem("username", user);
+        context?.login();
+        navigate("/dashboard/inicio");
+      })
+      .catch((err) => {
+        setSnackMessage(err.response.data.message || err.message);
+        setOpenError(true);
+      });
   }
   return (
     <LoginContainer color={colors.main}>
@@ -89,6 +102,20 @@ const Login: FC = () => {
       <p style={{ position: "fixed", bottom: "20px" }}>
         CRIARE TECH © 2022 Todos os Direitos Reservados.
       </p>
+      <Snackbar
+        open={openError}
+        onClose={() => setOpenError(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert
+          onClose={() => setOpenError(false)}
+          severity="error"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {snackMessage}
+        </Alert>
+      </Snackbar>
     </LoginContainer>
   );
 };
