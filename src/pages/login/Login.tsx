@@ -7,7 +7,7 @@ import colors from "../../utils/colors";
 import { LoginContainer } from "./style";
 import AppTextField from "../../components/AppTextField";
 import { api } from "../../utils/api";
-import { ILogin } from "../../interfaces/auth.interface";
+import { ILoginResponse } from "../../interfaces/user.interface";
 
 const Login: FC = () => {
   const [user, setUser] = useState("");
@@ -25,12 +25,20 @@ const Login: FC = () => {
 
   function login() {
     api()
-      .post<ILogin>("/entrar/", { usuario: user, senha: password })
+      .post<{ data: ILoginResponse }>("/autenticacao/entrar/", {
+        usuario: user,
+        senha: password,
+      })
       .then((res) => {
-        localStorage.setItem("authorization", res.data.token);
+        localStorage.setItem("authorization", res.data.data.user_info.token);
         localStorage.setItem("weducar_login", "true");
         localStorage.setItem("username", user);
         context?.login();
+        const usuario = res.data.data.user_info.usuario;
+        const funcionario = res.data.data.user_info.funcionario;
+        const token = res.data.data.user_info.token;
+
+        context?.setUserInfo({ usuario, funcionario, token });
         navigate("/dashboard/inicio");
       })
       .catch((err) => {

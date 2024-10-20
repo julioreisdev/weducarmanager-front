@@ -40,7 +40,7 @@ const Profile: FC = () => {
         onClose={handleActionsClose}
       >
         <MenuItem
-          onClick={logout}
+          onClick={() => logout()}
           sx={{ "&:hover": { color: "primary.main" } }}
         >
           {createElement(Icons.LogoutIcon)}
