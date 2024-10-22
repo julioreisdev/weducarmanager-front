@@ -27,7 +27,7 @@ const Login: FC = () => {
   function login() {
     setLoading(true);
     api()
-      .post<{ data: ILoginResponse }>("/autenticacao/entrar/", {
+      .post<{ data: ILoginResponse }>("/auth/signin/", {
         usuario: user,
         senha: password,
       })
