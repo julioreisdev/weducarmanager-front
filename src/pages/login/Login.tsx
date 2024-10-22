@@ -34,7 +34,19 @@ const Login: FC = () => {
       .then((res) => {
         localStorage.setItem("authorization", res.data.data.user_info.token);
         localStorage.setItem("weducar_login", "true");
-        localStorage.setItem("username", user);
+        localStorage.setItem(
+          "usuario",
+          res.data.data.user_info.usuario.usuario
+        );
+        localStorage.setItem("tipo", res.data.data.user_info.usuario.tipo);
+        localStorage.setItem(
+          "id_user",
+          res.data.data.user_info.usuario.id.toString()
+        );
+        localStorage.setItem(
+          "id_funcionario",
+          res.data.data.user_info.usuario.id_funcionario.toString()
+        );
         context?.login();
         const usuario = res.data.data.user_info.usuario;
         const funcionario = res.data.data.user_info.funcionario;

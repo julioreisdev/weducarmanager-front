@@ -13,7 +13,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import sidebarItems from "../../utils/sidebarItems";
-import { createElement, useEffect, useState } from "react";
+import { createElement, useEffect, useMemo, useState } from "react";
 import { ISidebarItems } from "../../interfaces/sidebar.interface";
 import { useNavigate } from "react-router-dom";
 import colors from "../../utils/colors";
@@ -128,9 +128,15 @@ const Dashboard: React.FC<IProps> = ({ children }) => {
     setOpen(width > 720 ? true : false);
   }, []);
 
+  const sidebarItemsAccess = useMemo(() => {
+    return sidebarItems.filter((item) =>
+      item.users_type.some((role) => role === localStorage.getItem("tipo"))
+    );
+  }, [sidebarItems]);
+
   useEffect(() => {
     setSidebarItemOpen(
-      sidebarItems.find((item) => currentUrl.includes(item.route))
+      sidebarItemsAccess.find((item) => currentUrl.includes(item.route))
     );
   }, [currentUrl]);
 
@@ -191,7 +197,7 @@ const Dashboard: React.FC<IProps> = ({ children }) => {
           </DrawerHeader>
           <Divider />
           <List>
-            {sidebarItems.map((item) => (
+            {sidebarItemsAccess.map((item) => (
               <ListItem
                 onClick={() => navigate(`${item.route}`)}
                 key={item.id}

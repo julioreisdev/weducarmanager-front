@@ -6,18 +6,21 @@ const sidebarItems = [
     name: "Página Inicial",
     route: "inicio",
     icon: Icons.DonutSmallIcon,
+    users_type: ["docente", "gestor", "admin", "super_admin"],
   },
   {
     id: 2,
     name: "Administrativo",
     route: "adm",
     icon: Icons.ManageAccountsIcon,
+    users_type: ["gestor", "admin", "super_admin"],
   },
   {
     id: 3,
     name: "Calendário",
     route: "calendario",
     icon: Icons.EditCalendarIcon,
+    users_type: ["docente", "gestor", "admin", "super_admin"],
   },
 
   {
@@ -25,6 +28,7 @@ const sidebarItems = [
     name: "Escola",
     route: "escola",
     icon: Icons.BusinessIcon,
+    users_type: ["gestor", "admin", "super_admin"],
   },
 
   {
@@ -32,6 +36,7 @@ const sidebarItems = [
     name: "Alunos",
     route: "alunos",
     icon: Icons.GroupsIcon,
+    users_type: ["docente", "gestor", "admin", "super_admin"],
   },
 
   {
@@ -39,6 +44,7 @@ const sidebarItems = [
     name: "Suporte",
     route: "suporte",
     icon: Icons.SupportAgentIcon,
+    users_type: ["super_admin"],
   },
 ].map((item) => {
   return {
