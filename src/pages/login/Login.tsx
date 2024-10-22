@@ -15,6 +15,7 @@ const Login: FC = () => {
   const navigate = useNavigate();
   const context = useContext(AuthContext);
   const [openError, setOpenError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const Login: FC = () => {
   }, []);
 
   function login() {
+    setLoading(true);
     api()
       .post<{ data: ILoginResponse }>("/autenticacao/entrar/", {
         usuario: user,
@@ -40,10 +42,12 @@ const Login: FC = () => {
 
         context?.setUserInfo({ usuario, funcionario, token });
         navigate("/dashboard/inicio");
+        setLoading(false);
       })
       .catch((err) => {
         setSnackMessage(err.response.data.message || err.message);
         setOpenError(true);
+        setLoading(false);
       });
   }
   return (
@@ -92,6 +96,7 @@ const Login: FC = () => {
           <LoadingButton
             type="submit"
             fullWidth
+            loading={loading}
             size="small"
             variant="contained"
             sx={{
