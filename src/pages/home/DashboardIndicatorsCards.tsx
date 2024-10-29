@@ -9,25 +9,25 @@ const indicators = [
     name: "Alunos Ativos",
     value: 0,
     bgColor: colors.green,
-    url: "/public/alunos.png",
+    url: "/alunos.png",
   },
   {
     name: "Professores",
     value: 0,
     bgColor: colors.blue,
-    url: "/public/professor.png",
+    url: "/professor.png",
   },
   {
     name: "Turmas",
     value: 0,
     bgColor: colors.orange,
-    url: "/public/turmas.png",
+    url: "/turmas.png",
   },
   {
     name: "Transferências",
     value: 0,
     bgColor: colors.red,
-    url: "/public/transferencia.png",
+    url: "/transferencia.png",
   },
 ];
 

@@ -8,25 +8,25 @@ const favorites = [
   {
     name: "Justificar Falta",
     bgColor: colors.main,
-    url: "/public/anotacao.png",
+    url: "/anotacao.png",
   },
-  { name: "Calendário", bgColor: colors.orange, url: "/public/calendario.png" },
+  { name: "Calendário", bgColor: colors.orange, url: "/calendario.png" },
   {
     name: "Histórico Escolar",
     bgColor: colors.main,
-    url: "/public/historico.png",
+    url: "/historico.png",
   },
   {
     name: "Ficha de Matrícula",
     bgColor: colors.orange,
-    url: "/public/ficha.png",
+    url: "/ficha.png",
   },
-  { name: "Turmas", bgColor: colors.main, url: "/public/turmas.png" },
-  { name: "Usuários", bgColor: colors.orange, url: "/public/usuarios.png" },
+  { name: "Turmas", bgColor: colors.main, url: "/turmas.png" },
+  { name: "Usuários", bgColor: colors.orange, url: "/usuarios.png" },
   {
     name: "Relatório - Boletim",
     bgColor: colors.main,
-    url: "/public/relatorios.png",
+    url: "/relatorios.png",
   },
 ];
 

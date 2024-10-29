@@ -6,6 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/dashboard/Dashboad";
 import Home from "./pages/home/Home";
 import Calendar from "./pages/calendar/Calendar";
+import { Disabled } from "./components/style";
 
 const App: FC = () => {
   return (
@@ -19,9 +20,23 @@ const App: FC = () => {
             <ProtectedRoute>
               <Dashboard>
                 <Routes>
-                  <Route path="/inicio" element={<Home />} />
+                  <Route
+                    path="/inicio"
+                    element={
+                      <Disabled>
+                        <Home />
+                      </Disabled>
+                    }
+                  />
                   <Route path="/adm" element={<>Admin</>} />
-                  <Route path="/calendario" element={<Calendar />} />
+                  <Route
+                    path="/calendario"
+                    element={
+                      <Disabled>
+                        <Calendar />
+                      </Disabled>
+                    }
+                  />
                   <Route path="/escola" element={<>Escola</>} />
                   <Route path="/alunos" element={<>Alunos</>} />
                   <Route path="/suporte" element={<>Suporte</>} />

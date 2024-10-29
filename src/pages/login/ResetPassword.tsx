@@ -33,7 +33,7 @@ const ResetPassword: FC = () => {
           }}
         >
           <img
-            src="/public/logoicon.png"
+            src="/logoicon.png"
             style={{ width: "50px", marginBottom: "1rem" }}
             alt=""
           />

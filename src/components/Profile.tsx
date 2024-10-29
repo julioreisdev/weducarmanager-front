@@ -28,7 +28,7 @@ const Profile: FC = () => {
           onClick={(e) => handleActionsOpen(e)}
         >
           {" "}
-          <ProfileImg src="/public/profile.png" />
+          <ProfileImg src="/profile.png" />
           {createElement(
             actionsEl ? Icons.ArrowDropUpIcon : Icons.ArrowDropDownIcon
           )}
