@@ -1,4 +1,34 @@
 import styled from "styled-components";
+import colors from "../utils/colors";
+
+export const sxToInputLabel = {
+  color: colors.main,
+  "&.Mui-focused": {
+    color: colors.main,
+  },
+  "&.MuiFormLabel-asterisk": {
+    color: colors.main,
+  },
+};
+
+export const sxToSelect = {
+  color: colors.main,
+  "& .MuiSelect-icon": {
+    color: colors.main,
+  },
+  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+    borderColor: colors.main,
+  },
+  "&:hover .MuiOutlinedInput-notchedOutline": {
+    borderColor: colors.main,
+  },
+};
+
+export const menuProps = {
+  PaperProps: {
+    sx: {},
+  },
+};
 
 export const FlexRowCenterBet = styled.div`
   display: flex;

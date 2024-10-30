@@ -38,22 +38,37 @@ const Login: FC = () => {
           "usuario",
           res.data.data.user_info.usuario.usuario
         );
-        localStorage.setItem("tipo", res.data.data.user_info.usuario.tipo);
         localStorage.setItem(
           "id_user",
           res.data.data.user_info.usuario.id.toString()
         );
         localStorage.setItem(
           "id_funcionario",
-          res.data.data.user_info.usuario.id_funcionario.toString()
+          res.data.data.user_info.funcionario.id_funcionario.toString()
         );
         context?.login();
         const usuario = res.data.data.user_info.usuario;
         const funcionario = res.data.data.user_info.funcionario;
         const token = res.data.data.user_info.token;
+        const instancias = res.data.data.user_info.instancias;
+        context?.setUserInfo({ usuario, funcionario, token, instancias });
 
-        context?.setUserInfo({ usuario, funcionario, token });
-        navigate("/dashboard/inicio");
+        if (instancias.length === 1) {
+          localStorage.setItem(
+            "tipo",
+            usuario.super_admin ? "super_admin" : instancias[0].tipo || ""
+          );
+          localStorage.setItem(
+            "id_instancia",
+            instancias[0].id.toString() || ""
+          );
+          localStorage.setItem("instancia", instancias[0].nome || "");
+
+          navigate("/dashboard/inicio");
+        } else {
+          navigate("/selecionar-escola");
+        }
+
         setLoading(false);
       })
       .catch((err) => {

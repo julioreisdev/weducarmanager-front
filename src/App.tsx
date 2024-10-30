@@ -7,6 +7,7 @@ import Dashboard from "./pages/dashboard/Dashboad";
 import Home from "./pages/home/Home";
 import Calendar from "./pages/calendar/Calendar";
 import { Disabled } from "./components/style";
+import SelectInstance from "./pages/login/SelectInstance";
 
 const App: FC = () => {
   return (
@@ -14,6 +15,16 @@ const App: FC = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/esqueci-minha-senha" element={<ResetPassword />} />
+
+        <Route
+          path="/selecionar-escola"
+          element={
+            <ProtectedRoute>
+              <SelectInstance />
+            </ProtectedRoute>
+          }
+        ></Route>
+
         <Route
           path="/dashboard/*"
           element={
