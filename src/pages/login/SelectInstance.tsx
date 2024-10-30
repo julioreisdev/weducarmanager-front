@@ -17,6 +17,9 @@ import {
   sxToSelect,
 } from "../../components/style";
 import { AuthContext } from "../../contexts/AuthContext";
+import { api, getHeaders } from "../../utils/api";
+import { ILoginResponse } from "../../interfaces/user.interface";
+import { LoadingButton } from "@mui/lab";
 
 const SelectInstance: FC = () => {
   const [instanceId, setInstanceId] = useState(1);
@@ -24,9 +27,32 @@ const SelectInstance: FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (context?.userInfo?.instancias.length) {
-      setInstanceId(context?.userInfo?.instancias[0].id || 0);
-    }
+    api()
+      .get<{ data: ILoginResponse }>(
+        `/instances/${localStorage.getItem("id_user")}`,
+        {
+          headers: getHeaders(),
+        }
+      )
+      .then((res) => {
+        const usuario = res.data.data.user_info.usuario;
+        const funcionario = res.data.data.user_info.funcionario;
+        const token = localStorage.getItem("authorization") || "";
+        const instancias = res.data.data.user_info.instancias;
+        context?.setUserInfo({ usuario, funcionario, token, instancias });
+        setInstanceId(instancias[0].id || 0);
+        localStorage.setItem(
+          "tipo",
+          context?.userInfo?.usuario.super_admin
+            ? "super_admin"
+            : instancias[0]?.tipo || ""
+        );
+        localStorage.setItem(
+          "id_instancia",
+          instancias[0]?.id.toString() || ""
+        );
+        localStorage.setItem("instancia", instancias[0]?.nome || "");
+      });
   }, []);
 
   function finishLogin() {
@@ -42,7 +68,6 @@ const SelectInstance: FC = () => {
     );
     localStorage.setItem("id_instancia", instance?.id.toString() || "");
     localStorage.setItem("instancia", instance?.nome || "");
-    localStorage.setItem("weducar_login", "true");
 
     navigate("/dashboard/inicio");
   }
@@ -72,12 +97,6 @@ const SelectInstance: FC = () => {
             style={{ width: "50px", marginBottom: "1rem" }}
             alt=""
           />
-
-          {!context?.userInfo?.instancias.length ? (
-            <h5 style={{ marginBottom: "0.5rem", color: colors.red }}>
-              Perdemos sua conexão, faça login novamente!
-            </h5>
-          ) : null}
 
           <FormControl fullWidth>
             <InputLabel sx={sxToInputLabel} id="demo-simple-select-label">
@@ -116,11 +135,12 @@ const SelectInstance: FC = () => {
             >
               Voltar ao login
             </Button>
-            <Button
+            <LoadingButton
               type="submit"
               fullWidth
               size="small"
               variant="contained"
+              loading={!context?.userInfo?.instancias.length}
               sx={{
                 backgroundColor: colors.main,
                 padding: "0.5rem",
@@ -129,7 +149,7 @@ const SelectInstance: FC = () => {
               onClick={finishLogin}
             >
               Continuar
-            </Button>
+            </LoadingButton>
           </FlexRowCenterBet>
         </form>
       </Card>
