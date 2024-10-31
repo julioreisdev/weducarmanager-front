@@ -1,5 +1,9 @@
 import { FC, useState, useEffect, useRef } from "react";
-import { SectionSubTitle } from "../../components/style";
+import {
+  CardDashContainer,
+  Disabled,
+  SectionSubTitle,
+} from "../../components/style";
 import colors from "../../utils/colors";
 import { Box } from "@mui/material";
 import DashboardIndicatorCard from "../../components/DashboardIndicatorCard";
@@ -10,24 +14,28 @@ const indicators = [
     value: 0,
     bgColor: colors.green,
     url: "/alunos.png",
+    disabled: true,
   },
   {
     name: "Professores",
     value: 0,
     bgColor: colors.blue,
     url: "/professor.png",
+    disabled: true,
   },
   {
     name: "Turmas",
     value: 0,
     bgColor: colors.orange,
     url: "/turmas.png",
+    disabled: true,
   },
   {
     name: "Transferências",
     value: 0,
     bgColor: colors.red,
     url: "/transferencia.png",
+    disabled: true,
   },
 ];
 
@@ -102,12 +110,25 @@ const DashboardIndicatorsCards: FC = () => {
               },
             }}
           >
-            <DashboardIndicatorCard
-              title={item.name}
-              url={item.url}
-              value={item.value}
-              bgColor={item.bgColor}
-            />
+            <CardDashContainer>
+              {item.disabled ? (
+                <Disabled>
+                  <DashboardIndicatorCard
+                    title={item.name}
+                    url={item.url}
+                    value={item.value}
+                    bgColor={item.bgColor}
+                  />
+                </Disabled>
+              ) : (
+                <DashboardIndicatorCard
+                  title={item.name}
+                  url={item.url}
+                  value={item.value}
+                  bgColor={item.bgColor}
+                />
+              )}
+            </CardDashContainer>
           </Box>
         ))}
       </Box>

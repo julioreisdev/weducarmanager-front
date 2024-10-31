@@ -6,8 +6,11 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/dashboard/Dashboad";
 import Home from "./pages/home/Home";
 import Calendar from "./pages/calendar/Calendar";
-import { Disabled } from "./components/style";
 import SelectInstance from "./pages/login/SelectInstance";
+import Admin from "./pages/adm/Admin";
+import Support from "./pages/support/Support";
+import Students from "./pages/students/Students";
+import School from "./pages/school/School";
 
 const App: FC = () => {
   return (
@@ -31,26 +34,12 @@ const App: FC = () => {
             <ProtectedRoute>
               <Dashboard>
                 <Routes>
-                  <Route
-                    path="/inicio"
-                    element={
-                      <Disabled>
-                        <Home />
-                      </Disabled>
-                    }
-                  />
-                  <Route path="/adm" element={<>Admin</>} />
-                  <Route
-                    path="/calendario"
-                    element={
-                      <Disabled>
-                        <Calendar />
-                      </Disabled>
-                    }
-                  />
-                  <Route path="/escola" element={<>Escola</>} />
-                  <Route path="/alunos" element={<>Alunos</>} />
-                  <Route path="/suporte" element={<>Suporte</>} />
+                  <Route path="/inicio" element={<Home />} />
+                  <Route path="/adm" element={<Admin />} />
+                  <Route path="/calendario" element={<Calendar />} />
+                  <Route path="/escola" element={<School />} />
+                  <Route path="/alunos" element={<Students />} />
+                  <Route path="/suporte" element={<Support />} />
                 </Routes>
               </Dashboard>
             </ProtectedRoute>

@@ -25,8 +25,14 @@ import EditCalendarIcon from "@mui/icons-material/EditCalendar";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import ForumIcon from "@mui/icons-material/Forum";
+import MailIcon from "@mui/icons-material/Mail";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 const Icons = {
+  WhatsAppIcon,
+  MailIcon,
+  ForumIcon,
   CheckBoxOutlineBlankIcon,
   CheckBoxIcon,
   SupportAgentIcon,

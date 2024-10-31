@@ -36,6 +36,12 @@ export const FlexRowCenterBet = styled.div`
   justify-content: space-between;
 `;
 
+export const FlexRowCenterWrap = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+`;
+
 export const FlexColCenter = styled.div`
   display: flex;
   align-items: center;
@@ -73,4 +79,31 @@ export const SectionSubTitle = styled.p`
 export const Disabled = styled.div`
   opacity: 0.3;
   pointer-events: none;
+`;
+
+export const CardAdminContainer = styled.div`
+  width: 15vw;
+  height: 180px;
+
+  @media (max-width: 520px) {
+    width: 100%;
+  }
+`;
+
+export const CardFavoriteContainer = styled.div`
+  width: 10vw;
+  height: 120px;
+
+  @media (max-width: 720px) {
+    width: 120px;
+  }
+`;
+
+export const CardDashContainer = styled.div`
+  width: 19vw;
+  height: 120px;
+
+  @media (max-width: 1200px) {
+    width: 280pc;
+  }
 `;

@@ -1,5 +1,5 @@
 import { FC, useState, useEffect, useRef } from "react";
-import { SectionSubTitle } from "../../components/style";
+import { Disabled, SectionSubTitle } from "../../components/style";
 import FavoriteCard from "../../components/FavoriteCard";
 import colors from "../../utils/colors";
 import { Box } from "@mui/material";
@@ -9,24 +9,38 @@ const favorites = [
     name: "Justificar Falta",
     bgColor: colors.main,
     url: "/anotacao.png",
+    disabled: true,
   },
-  { name: "Calendário", bgColor: colors.orange, url: "/calendario.png" },
+  {
+    name: "Calendário",
+    bgColor: colors.orange,
+    url: "/calendario.png",
+    disabled: true,
+  },
   {
     name: "Histórico Escolar",
     bgColor: colors.main,
     url: "/historico.png",
+    disabled: true,
   },
   {
     name: "Ficha de Matrícula",
     bgColor: colors.orange,
     url: "/ficha.png",
+    disabled: true,
   },
-  { name: "Turmas", bgColor: colors.main, url: "/turmas.png" },
-  { name: "Usuários", bgColor: colors.orange, url: "/usuarios.png" },
+  { name: "Turmas", bgColor: colors.main, url: "/turmas.png", disabled: true },
+  {
+    name: "Usuários",
+    bgColor: colors.orange,
+    url: "/usuarios.png",
+    disabled: true,
+  },
   {
     name: "Relatório - Boletim",
     bgColor: colors.main,
     url: "/relatorios.png",
+    disabled: true,
   },
 ];
 
@@ -101,11 +115,23 @@ const Favorites: FC = () => {
               },
             }}
           >
-            <FavoriteCard
-              title={item.name}
-              url={item.url}
-              bgColor={item.bgColor}
-            />
+            <>
+              {item.disabled ? (
+                <Disabled>
+                  <FavoriteCard
+                    title={item.name}
+                    url={item.url}
+                    bgColor={item.bgColor}
+                  />
+                </Disabled>
+              ) : (
+                <FavoriteCard
+                  title={item.name}
+                  url={item.url}
+                  bgColor={item.bgColor}
+                />
+              )}
+            </>
           </Box>
         ))}
       </Box>

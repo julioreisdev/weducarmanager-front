@@ -15,91 +15,91 @@ import {
 import Icons from "../../utils/icons";
 
 const data: TInstructorIndicatores = [
-  // {
-  //   id: 1,
-  //   name: "Júlio Cezar dos Reis Pais",
-  //   disciplines: [
-  //     {
-  //       id: 1,
-  //       name: "Programador Web",
-  //       total_awaiting_class: 20,
-  //       total_invalid_class: 2,
-  //       total_confirmed_class: 80,
-  //     },
-  //   ],
-  //   total_awaiting_class: 20,
-  //   total_invalid_class: 2,
-  //   total_confirmed_class: 80,
-  // },
-  // {
-  //   id: 2,
-  //   name: "Ana Maria Silva",
-  //   disciplines: [
-  //     {
-  //       id: 2,
-  //       name: "Matemática",
-  //       total_awaiting_class: 15,
-  //       total_invalid_class: 1,
-  //       total_confirmed_class: 60,
-  //     },
-  //     {
-  //       id: 3,
-  //       name: "Física",
-  //       total_awaiting_class: 10,
-  //       total_invalid_class: 0,
-  //       total_confirmed_class: 50,
-  //     },
-  //   ],
-  //   total_awaiting_class: 25,
-  //   total_invalid_class: 1,
-  //   total_confirmed_class: 110,
-  // },
-  // {
-  //   id: 3,
-  //   name: "Carlos Alberto",
-  //   disciplines: [
-  //     {
-  //       id: 4,
-  //       name: "Química",
-  //       total_awaiting_class: 12,
-  //       total_invalid_class: 1,
-  //       total_confirmed_class: 55,
-  //     },
-  //     {
-  //       id: 5,
-  //       name: "Biologia",
-  //       total_awaiting_class: 18,
-  //       total_invalid_class: 2,
-  //       total_confirmed_class: 70,
-  //     },
-  //   ],
-  //   total_awaiting_class: 30,
-  //   total_invalid_class: 3,
-  //   total_confirmed_class: 125,
-  // },
-  // {
-  //   id: 4,
-  //   name: "Mariana Costa",
-  //   disciplines: [
-  //     {
-  //       id: 6,
-  //       name: "História",
-  //       total_awaiting_class: 22,
-  //       total_invalid_class: 2,
-  //       total_confirmed_class: 85,
-  //     },
-  //     {
-  //       id: 7,
-  //       name: "Geografia",
-  //       total_awaiting_class: 16,
-  //       total_invalid_class: 1,
-  //       total_confirmed_class: 65,
-  //     },
-  //   ],
-  //   total_awaiting_class: 38,
-  //   total_invalid_class: 3,
-  //   total_confirmed_class: 150,
-  // },
+  {
+    id: 1,
+    name: "Júlio Cezar dos Reis Pais",
+    disciplines: [
+      {
+        id: 1,
+        name: "Programador Web",
+        total_awaiting_class: 20,
+        total_invalid_class: 2,
+        total_confirmed_class: 80,
+      },
+    ],
+    total_awaiting_class: 20,
+    total_invalid_class: 2,
+    total_confirmed_class: 80,
+  },
+  {
+    id: 2,
+    name: "Ana Maria Silva",
+    disciplines: [
+      {
+        id: 2,
+        name: "Matemática",
+        total_awaiting_class: 15,
+        total_invalid_class: 1,
+        total_confirmed_class: 60,
+      },
+      {
+        id: 3,
+        name: "Física",
+        total_awaiting_class: 10,
+        total_invalid_class: 0,
+        total_confirmed_class: 50,
+      },
+    ],
+    total_awaiting_class: 25,
+    total_invalid_class: 1,
+    total_confirmed_class: 110,
+  },
+  {
+    id: 3,
+    name: "Carlos Alberto",
+    disciplines: [
+      {
+        id: 4,
+        name: "Química",
+        total_awaiting_class: 12,
+        total_invalid_class: 1,
+        total_confirmed_class: 55,
+      },
+      {
+        id: 5,
+        name: "Biologia",
+        total_awaiting_class: 18,
+        total_invalid_class: 2,
+        total_confirmed_class: 70,
+      },
+    ],
+    total_awaiting_class: 30,
+    total_invalid_class: 3,
+    total_confirmed_class: 125,
+  },
+  {
+    id: 4,
+    name: "Mariana Costa",
+    disciplines: [
+      {
+        id: 6,
+        name: "História",
+        total_awaiting_class: 22,
+        total_invalid_class: 2,
+        total_confirmed_class: 85,
+      },
+      {
+        id: 7,
+        name: "Geografia",
+        total_awaiting_class: 16,
+        total_invalid_class: 1,
+        total_confirmed_class: 65,
+      },
+    ],
+    total_awaiting_class: 38,
+    total_invalid_class: 3,
+    total_confirmed_class: 150,
+  },
 ];
 
 const InstructorIndicatores: FC = () => {
