@@ -1,4 +1,5 @@
 import axios from "axios";
+import logout from "./logout";
 
 export function getHeaders() {
   const token = localStorage.getItem("authorization");
@@ -16,3 +17,25 @@ export const api = () => {
     headers: getHeaders(),
   });
 };
+
+export async function fetcherWithParams<T>(
+  url: string,
+  params?: Record<string, unknown>
+): Promise<T> {
+  if (!getHeaders()) {
+    throw new Error("Invalid credentials");
+  }
+
+  return api()
+    .get<T>(url, {
+      headers: getHeaders(),
+      params: {
+        ...params,
+      },
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      logout(err.response?.status);
+      throw err;
+    });
+}

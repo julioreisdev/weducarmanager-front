@@ -43,7 +43,7 @@ const Up: FC = () => {
 
       <FlexRowCenterWrap style={{ gap: "1rem" }}>
         {cards.map((i) => (
-          <CardAdminContainer>
+          <CardAdminContainer key={i.name}>
             {i.disabled ? (
               <Disabled>
                 {" "}

@@ -6,7 +6,7 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { LoginContainer } from "./style";
 import colors from "../../utils/colors";
 import logout from "../../utils/logout";
@@ -16,58 +16,56 @@ import {
   sxToInputLabel,
   sxToSelect,
 } from "../../components/style";
-import { AuthContext } from "../../contexts/AuthContext";
-import { api, getHeaders } from "../../utils/api";
-import { ILoginResponse } from "../../interfaces/user.interface";
 import { LoadingButton } from "@mui/lab";
+import { IInstance } from "../../interfaces/user.interface";
+import { useUserInfo } from "../../hooks/useUserInfo";
 
 const SelectInstance: FC = () => {
-  const [instanceId, setInstanceId] = useState(1);
-  const context = useContext(AuthContext);
+  const [selectedId, setSelectedId] = useState(0);
+  const [instances, setInstances] = useState<IInstance[]>();
   const navigate = useNavigate();
+  const { userInfo, userInfoLoading } = useUserInfo();
 
   useEffect(() => {
-    api()
-      .get<{ data: ILoginResponse }>(
-        `/instances/${localStorage.getItem("id_user")}`,
-        {
-          headers: getHeaders(),
-        }
-      )
-      .then((res) => {
-        const usuario = res.data.data.user_info.usuario;
-        const funcionario = res.data.data.user_info.funcionario;
-        const token = localStorage.getItem("authorization") || "";
-        const instancias = res.data.data.user_info.instancias;
-        context?.setUserInfo({ usuario, funcionario, token, instancias });
-        setInstanceId(instancias[0].id || 0);
+    if (userInfo?.data) {
+      setInstances(
+        userInfo.data.user_info.instancias?.filter((i) => i.tipo !== "docente")
+      );
+
+      if (userInfo.data.user_info.instancias) {
+        setSelectedId(userInfo.data.user_info.instancias[0].id);
+      }
+      if (userInfo.data.user_info.instancias) {
         localStorage.setItem(
           "tipo",
-          context?.userInfo?.usuario.super_admin
+          userInfo.data.user_info.usuario?.super_admin
             ? "super_admin"
-            : instancias[0]?.tipo || ""
+            : userInfo.data.user_info.instancias[0]?.tipo || ""
         );
         localStorage.setItem(
           "id_instancia",
-          instancias[0]?.id.toString() || ""
+          userInfo.data.user_info.instancias[0]?.id.toString() || ""
         );
-        localStorage.setItem("instancia", instancias[0]?.nome || "");
-      });
-  }, []);
+        localStorage.setItem(
+          "instancia",
+          userInfo.data.user_info.instancias[0]?.nome || ""
+        );
+      }
+    }
+  }, [userInfo, userInfoLoading]);
 
   function finishLogin() {
-    const instance = context?.userInfo?.instancias.find(
-      (i) => i.id === instanceId
-    );
-
-    localStorage.setItem(
-      "tipo",
-      context?.userInfo?.usuario.super_admin
-        ? "super_admin"
-        : instance?.tipo || ""
-    );
-    localStorage.setItem("id_instancia", instance?.id.toString() || "");
-    localStorage.setItem("instancia", instance?.nome || "");
+    const selected = instances?.find((i) => i.id === selectedId);
+    if (selected) {
+      localStorage.setItem(
+        "tipo",
+        userInfo?.data.user_info.usuario?.super_admin
+          ? "super_admin"
+          : selected?.tipo || ""
+      );
+      localStorage.setItem("id_instancia", selected?.id.toString() || "");
+      localStorage.setItem("instancia", selected?.nome || "");
+    }
 
     navigate("/dashboard/inicio");
   }
@@ -106,14 +104,14 @@ const SelectInstance: FC = () => {
               size="small"
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={instanceId}
+              value={selectedId}
               label="Cidade"
               onChange={(e) => {
-                setInstanceId(Number(e.target.value));
+                setSelectedId(Number(e.target.value));
               }}
               sx={sxToSelect}
             >
-              {context?.userInfo?.instancias.map((i) => (
+              {instances?.map((i) => (
                 <MenuItem key={i.id} sx={{ color: colors.main }} value={i.id}>
                   {i.nome}
                 </MenuItem>
@@ -140,7 +138,7 @@ const SelectInstance: FC = () => {
               fullWidth
               size="small"
               variant="contained"
-              loading={!context?.userInfo?.instancias.length}
+              loading={userInfoLoading}
               sx={{
                 backgroundColor: colors.main,
                 padding: "0.5rem",

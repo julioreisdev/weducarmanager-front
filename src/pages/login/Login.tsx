@@ -1,8 +1,7 @@
 import { Alert, Card, Snackbar } from "@mui/material";
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext";
 import colors from "../../utils/colors";
 import { LoginContainer } from "./style";
 import AppTextField from "../../components/AppTextField";
@@ -13,13 +12,12 @@ const Login: FC = () => {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const context = useContext(AuthContext);
   const [openError, setOpenError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
 
   useEffect(() => {
-    if (localStorage.getItem("weducar_login") === "true") {
+    if (localStorage.getItem("authorization")) {
       navigate("/dashboard/inicio");
     }
   }, []);
@@ -32,27 +30,32 @@ const Login: FC = () => {
         senha: password,
       })
       .then((res) => {
-        localStorage.setItem("authorization", res.data.data.user_info.token);
         localStorage.setItem(
-          "usuario",
-          res.data.data.user_info.usuario.usuario
+          "authorization",
+          res.data.data.user_info.token || ""
         );
-        localStorage.setItem(
-          "id_user",
-          res.data.data.user_info.usuario.id.toString()
-        );
-        localStorage.setItem(
-          "id_funcionario",
-          res.data.data.user_info.funcionario.id_funcionario.toString()
-        );
-        context?.login();
-        const usuario = res.data.data.user_info.usuario;
-        const funcionario = res.data.data.user_info.funcionario;
-        const token = res.data.data.user_info.token;
-        const instancias = res.data.data.user_info.instancias;
-        context?.setUserInfo({ usuario, funcionario, token, instancias });
+        if (res.data.data.user_info.usuario) {
+          localStorage.setItem(
+            "usuario",
+            res.data.data.user_info.usuario.usuario
+          );
+          localStorage.setItem(
+            "id_user",
+            res.data.data.user_info.usuario.id.toString()
+          );
+        }
 
-        if (instancias.length === 1) {
+        if (res.data.data.user_info.funcionario) {
+          localStorage.setItem(
+            "id_funcionario",
+            res.data.data.user_info.funcionario.id_funcionario.toString()
+          );
+        }
+
+        const usuario = res.data.data.user_info.usuario;
+        const instancias = res.data.data.user_info.instancias || [];
+
+        if (instancias.length === 1 && usuario) {
           localStorage.setItem(
             "tipo",
             usuario.super_admin ? "super_admin" : instancias[0].tipo || ""

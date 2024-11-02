@@ -7,7 +7,7 @@ import colors from "../../utils/colors";
 const ResetPassword: FC = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    if (localStorage.getItem("weducar_login") === "true") {
+    if (localStorage.getItem("authorization")) {
       navigate("/dashboard/inicio");
     }
   }, []);

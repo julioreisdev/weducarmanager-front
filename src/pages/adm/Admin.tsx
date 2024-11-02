@@ -74,7 +74,7 @@ const Admin: FC = () => {
       <SectionTitle>Administrativo</SectionTitle>
       <FlexRowCenterWrap style={{ gap: "1rem" }}>
         {items.map((i) => (
-          <CardAdminContainer>
+          <CardAdminContainer key={i.name}>
             {i.disabled ? (
               <Disabled>
                 {" "}

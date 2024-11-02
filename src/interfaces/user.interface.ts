@@ -26,10 +26,10 @@ export interface IFuncionario {
 }
 
 export interface IUserInfo {
-  usuario: IUser;
-  token: string;
-  funcionario: IFuncionario;
-  instancias: IInstance[];
+  usuario?: IUser;
+  token?: string;
+  funcionario?: IFuncionario;
+  instancias?: IInstance[];
 }
 
 export interface ILoginResponse {
