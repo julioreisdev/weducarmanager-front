@@ -18,13 +18,13 @@ import {
 } from "../../components/style";
 import { LoadingButton } from "@mui/lab";
 import { IInstance } from "../../interfaces/user.interface";
-import { useUserInfo } from "../../hooks/useUserInfo";
+import { UseUserInfo } from "../../hooks/useUserInfo";
 
 const SelectInstance: FC = () => {
   const [selectedId, setSelectedId] = useState(0);
   const [instances, setInstances] = useState<IInstance[]>();
   const navigate = useNavigate();
-  const { userInfo, userInfoLoading } = useUserInfo();
+  const { userInfo, userInfoLoading } = UseUserInfo();
 
   useEffect(() => {
     if (userInfo?.data) {

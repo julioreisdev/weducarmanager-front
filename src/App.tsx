@@ -11,6 +11,7 @@ import Admin from "./pages/adm/Admin";
 import Support from "./pages/support/Support";
 import Students from "./pages/students/Students";
 import School from "./pages/school/School";
+import StudentsRecord from "./pages/studentsRecord/StudentsRecord";
 
 const App: FC = () => {
   return (
@@ -39,6 +40,10 @@ const App: FC = () => {
                   <Route path="/calendario" element={<Calendar />} />
                   <Route path="/escola" element={<School />} />
                   <Route path="/alunos" element={<Students />} />
+                  <Route
+                    path="/alunos/ficha-de-matricula"
+                    element={<StudentsRecord />}
+                  />
                   <Route path="/suporte" element={<Support />} />
                 </Routes>
               </Dashboard>

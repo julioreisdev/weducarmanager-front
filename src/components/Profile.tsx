@@ -11,16 +11,21 @@ import {
 } from "@mui/material";
 import Icons from "../utils/icons";
 import logout from "../utils/logout";
-import { FlexRowCenterBet, sxToInputLabel, sxToSelect } from "./style";
+import {
+  Disabled,
+  FlexRowCenterBet,
+  sxToInputLabel,
+  sxToSelect,
+} from "./style";
 import colors from "../utils/colors";
 import { IInstance } from "../interfaces/user.interface";
-import { useUserInfo } from "../hooks/useUserInfo";
+import { UseUserInfo } from "../hooks/useUserInfo";
 
 const Profile: FC = () => {
   const [actionsEl, setActionsEl] = useState<null | HTMLElement>(null);
   const [selectedId, setSelectedId] = useState(0);
   const [instances, setInstances] = useState<IInstance[]>();
-  const { userInfo, userInfoLoading } = useUserInfo();
+  const { userInfo, userInfoLoading } = UseUserInfo();
 
   useEffect(() => {
     if (userInfo?.data) {
@@ -56,38 +61,14 @@ const Profile: FC = () => {
   return (
     <>
       <FlexRowCenterBet>
-        <Box sx={{ width: "150px" }}>
-          {" "}
-          <FormControl fullWidth>
-            <InputLabel sx={sxToInputLabel} id="demo-simple-select-label">
-              Cidade
-            </InputLabel>
-            <Select
-              size="small"
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={selectedId}
-              label="Cidade"
-              onChange={(e) => {
-                setSelectedId(Number(e.target.value));
-                changeInstance(Number(e.target.value));
-              }}
-              sx={sxToSelect}
-            >
-              {instances?.map((i) => (
-                <MenuItem key={i.id} sx={{ color: colors.main }} value={i.id}>
-                  {i.nome}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-        <IconButton sx={{ color: colors.main }}>
-          {createElement(Icons.MailOutlineIcon)}
-        </IconButton>
-        <IconButton sx={{ color: colors.main }}>
-          {createElement(Icons.NotificationsNoneIcon)}
-        </IconButton>
+        <Disabled>
+          <IconButton sx={{ color: colors.main }}>
+            {createElement(Icons.MailOutlineIcon)}
+          </IconButton>
+          <IconButton sx={{ color: colors.main }}>
+            {createElement(Icons.NotificationsNoneIcon)}
+          </IconButton>
+        </Disabled>
         <FlexRowCenterBet
           style={{ gap: "0.1rem", cursor: "pointer" }}
           onClick={(e) => handleActionsOpen(e)}
@@ -104,6 +85,65 @@ const Profile: FC = () => {
         open={Boolean(actionsEl)}
         onClose={handleActionsClose}
       >
+        <MenuItem>
+          <Box sx={{ width: "150px" }}>
+            {" "}
+            <FormControl fullWidth>
+              <InputLabel sx={sxToInputLabel} id="demo-simple-select-label">
+                Cidade
+              </InputLabel>
+              <Select
+                size="small"
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={selectedId}
+                label="Cidade"
+                onChange={(e) => {
+                  setSelectedId(Number(e.target.value));
+                  changeInstance(Number(e.target.value));
+                }}
+                sx={sxToSelect}
+              >
+                {instances?.map((i) => (
+                  <MenuItem key={i.id} sx={{ color: colors.main }} value={i.id}>
+                    {i.nome}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        </MenuItem>
+        <MenuItem>
+          <Box sx={{ width: "150px" }}>
+            {" "}
+            <FormControl fullWidth>
+              <InputLabel
+                sx={sxToInputLabel}
+                id="demo-simple-select-label-year"
+              >
+                Ano
+              </InputLabel>
+              <Select
+                size="small"
+                labelId="demo-simple-select-label-year"
+                id="demo-simple-select-year"
+                value={2024}
+                label="Ano"
+                onChange={() => {}}
+                sx={sxToSelect}
+              >
+                <MenuItem
+                  key={"teste"}
+                  sx={{ color: colors.main }}
+                  value={2024}
+                >
+                  2024
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </MenuItem>
+
         <MenuItem
           onClick={() => logout()}
           sx={{ "&:hover": { color: "primary.main" } }}
