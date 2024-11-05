@@ -103,7 +103,7 @@ const StudentsRecord: FC = () => {
                 </TableCell>
                 <TableCell align="right">{student.Nome}</TableCell>
                 <TableCell align="right">{student.Responsavel}</TableCell>
-                <TableCell align="right">{student.Ano}</TableCell>
+                <TableCell align="right">{student.Serie}</TableCell>
                 <TableCell align="right">{student.Turma}</TableCell>
                 <TableCell align="right">{student.Situacao}</TableCell>
 
