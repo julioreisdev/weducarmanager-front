@@ -28,8 +28,20 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ForumIcon from "@mui/icons-material/Forum";
 import MailIcon from "@mui/icons-material/Mail";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import EditIcon from "@mui/icons-material/Edit";
+import PageviewIcon from "@mui/icons-material/Pageview";
+import SearchIcon from "@mui/icons-material/Search";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
 const Icons = {
+  FilterAltIcon,
+  SearchIcon,
+  PageviewIcon,
+  EditIcon,
+  RemoveCircleIcon,
+  AddIcon,
   WhatsAppIcon,
   MailIcon,
   ForumIcon,

@@ -10,6 +10,8 @@ interface AppTextFieldProps {
   type?: string;
   required?: boolean;
   sx?: object;
+  endIcon?: React.ReactNode;
+  startIcon?: React.ReactNode;
 }
 
 const CustomTextField = styled(TextField)(() => ({
@@ -39,6 +41,8 @@ const AppTextField: FC<AppTextFieldProps> = ({
   type = "text",
   required = false,
   sx,
+  endIcon,
+  startIcon,
 }) => {
   return (
     <CustomTextField
@@ -50,6 +54,10 @@ const AppTextField: FC<AppTextFieldProps> = ({
       required={required}
       type={type}
       sx={{ ...sx }}
+      InputProps={{
+        startAdornment: startIcon ? <div>{startIcon}</div> : null,
+        endAdornment: endIcon ? <div>{endIcon}</div> : null,
+      }}
     />
   );
 };
