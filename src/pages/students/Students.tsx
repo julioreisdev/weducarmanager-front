@@ -11,11 +11,18 @@ import { useNavigate } from "react-router-dom";
 
 const items = [
   {
-    name: "Ficha de matrícula",
+    name: "Matrícula",
     bgColor: colors.blue,
     url: "/matriz.png",
     disabled: false,
-    route: "ficha-de-matricula",
+    route: "matricula",
+  },
+  {
+    name: "Rematrícula",
+    bgColor: colors.blue,
+    url: "/matriz.png",
+    disabled: false,
+    route: "rematricula",
   },
   {
     name: "Ocorrências",

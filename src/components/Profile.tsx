@@ -60,24 +60,59 @@ const Profile: FC = () => {
   const handleActionsClose = () => setActionsEl(null);
   return (
     <>
-      <FlexRowCenterBet>
+      <FlexRowCenterBet style={{ width: "100%" }}>
         <Disabled>
           <IconButton sx={{ color: colors.main }}>
-            {createElement(Icons.MailOutlineIcon)}
-          </IconButton>
-          <IconButton sx={{ color: colors.main }}>
-            {createElement(Icons.NotificationsNoneIcon)}
+            {createElement(Icons.SearchIcon)}
           </IconButton>
         </Disabled>
-        <FlexRowCenterBet
-          style={{ gap: "0.1rem", cursor: "pointer" }}
-          onClick={(e) => handleActionsOpen(e)}
-        >
-          {" "}
-          <ProfileImg src="/profile.png" />
-          {createElement(
-            actionsEl ? Icons.ArrowDropUpIcon : Icons.ArrowDropDownIcon
-          )}
+        <FlexRowCenterBet>
+          <Box sx={{ width: "px" }}>
+            {" "}
+            <FormControl fullWidth>
+              <InputLabel
+                sx={sxToInputLabel}
+                id="demo-simple-select-label-year"
+              >
+                Ano
+              </InputLabel>
+              <Select
+                size="small"
+                labelId="demo-simple-select-label-year"
+                id="demo-simple-select-year"
+                value={2024}
+                label="Ano"
+                onChange={() => {}}
+                sx={sxToSelect}
+              >
+                <MenuItem
+                  key={"teste"}
+                  sx={{ color: colors.main }}
+                  value={2024}
+                >
+                  2024
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+          <Disabled>
+            <IconButton sx={{ color: colors.main }}>
+              {createElement(Icons.MailOutlineIcon)}
+            </IconButton>
+            <IconButton sx={{ color: colors.main }}>
+              {createElement(Icons.NotificationsNoneIcon)}
+            </IconButton>
+          </Disabled>
+          <FlexRowCenterBet
+            style={{ gap: "0.1rem", cursor: "pointer" }}
+            onClick={(e) => handleActionsOpen(e)}
+          >
+            {" "}
+            <ProfileImg src="/profile.png" />
+            {createElement(
+              actionsEl ? Icons.ArrowDropUpIcon : Icons.ArrowDropDownIcon
+            )}
+          </FlexRowCenterBet>
         </FlexRowCenterBet>
       </FlexRowCenterBet>
       <Menu
@@ -109,36 +144,6 @@ const Profile: FC = () => {
                     {i.nome}
                   </MenuItem>
                 ))}
-              </Select>
-            </FormControl>
-          </Box>
-        </MenuItem>
-        <MenuItem>
-          <Box sx={{ width: "150px" }}>
-            {" "}
-            <FormControl fullWidth>
-              <InputLabel
-                sx={sxToInputLabel}
-                id="demo-simple-select-label-year"
-              >
-                Ano
-              </InputLabel>
-              <Select
-                size="small"
-                labelId="demo-simple-select-label-year"
-                id="demo-simple-select-year"
-                value={2024}
-                label="Ano"
-                onChange={() => {}}
-                sx={sxToSelect}
-              >
-                <MenuItem
-                  key={"teste"}
-                  sx={{ color: colors.main }}
-                  value={2024}
-                >
-                  2024
-                </MenuItem>
               </Select>
             </FormControl>
           </Box>

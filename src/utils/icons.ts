@@ -34,8 +34,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import PageviewIcon from "@mui/icons-material/Pageview";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import PrintIcon from '@mui/icons-material/Print';
 
 const Icons = {
+  PrintIcon,
   FilterAltIcon,
   SearchIcon,
   PageviewIcon,

@@ -107,3 +107,51 @@ export const CardDashContainer = styled.div`
     width: 280pc;
   }
 `;
+
+export const ActionsTableContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  @media (max-width: 720px) {
+    width: 100%;
+    flex-direction: column;
+    gap: 1rem;
+  }
+`;
+
+export const BigTableActionContainer = styled.div`
+  width: 200px;
+
+  @media (max-width: 720px) {
+    width: 100%;
+  }
+`;
+
+export const SmallTableActionContainer = styled.div`
+  width: 120px;
+
+  @media (max-width: 720px) {
+    width: 100%;
+  }
+`;
+
+export const HeaderActionsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+
+  @media (max-width: 720px) {
+    width: 100%;
+    flex-direction: column;
+    gap: 1rem;
+  }
+`;
+
+export const HeaderActionsContainerItem = styled.div`
+  @media (max-width: 720px) {
+    width: 100%;
+  }
+`;

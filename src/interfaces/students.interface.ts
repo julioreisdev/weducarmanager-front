@@ -1,9 +1,12 @@
 export interface IStudentFilterParams {
   id_instancia: number;
-  order: string;
   id_ano_letivo: number;
-  initial_row: number;
-  final_row: number;
+  order?: string;
+  initial_row?: number;
+  final_row?: number;
+  situacao?: string;
+  name?: string;
+  matricula?: string;
 }
 
 export interface IStudent {

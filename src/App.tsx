@@ -41,8 +41,12 @@ const App: FC = () => {
                   <Route path="/escola" element={<School />} />
                   <Route path="/alunos" element={<Students />} />
                   <Route
-                    path="/alunos/ficha-de-matricula"
+                    path="/alunos/matricula"
                     element={<StudentsRecord />}
+                  />
+                  <Route
+                    path="/alunos/rematricula"
+                    element={<>Rematrícula</>}
                   />
                   <Route path="/suporte" element={<Support />} />
                 </Routes>

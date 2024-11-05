@@ -24,7 +24,7 @@ const favorites = [
     disabled: true,
   },
   {
-    name: "Ficha de Matrícula",
+    name: "Matrícula",
     bgColor: colors.orange,
     url: "/ficha.png",
     disabled: true,
