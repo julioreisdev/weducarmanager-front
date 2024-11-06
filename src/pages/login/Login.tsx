@@ -25,47 +25,54 @@ const Login: FC = () => {
   function login() {
     setLoading(true);
     api()
-      .post<{ data: ILoginResponse }>("/auth/signin/", {
-        usuario: user,
-        senha: password,
+      .post<ILoginResponse>("api/v1/accounts/token/", {
+        username: user,
+        password: password,
       })
       .then((res) => {
+        localStorage.setItem("authorization", res.data.access);
+
+        const userInfo = res.data.user_info;
+        localStorage.setItem("user_id", userInfo.id.toString());
+        localStorage.setItem("username", userInfo.username);
+        localStorage.setItem("is_active", JSON.stringify(userInfo.is_active));
+        localStorage.setItem("is_staff", JSON.stringify(userInfo.is_staff));
         localStorage.setItem(
-          "authorization",
-          res.data.data.user_info.token || ""
+          "is_superuser",
+          JSON.stringify(userInfo.is_superuser)
         );
-        if (res.data.data.user_info.usuario) {
-          localStorage.setItem(
-            "usuario",
-            res.data.data.user_info.usuario.usuario
-          );
-          localStorage.setItem(
-            "id_user",
-            res.data.data.user_info.usuario.id.toString()
-          );
-        }
+        localStorage.setItem(
+          "last_access",
+          JSON.stringify(userInfo.last_access)
+        );
+        localStorage.setItem("access_count", userInfo.access_count.toString());
 
-        if (res.data.data.user_info.funcionario) {
-          localStorage.setItem(
-            "id_funcionario",
-            res.data.data.user_info.funcionario.id_funcionario.toString()
-          );
-        }
+        const employee = userInfo.employee;
+        localStorage.setItem("employee_id", employee.employee_id.toString());
+        localStorage.setItem("employee_name", employee.name);
+        localStorage.setItem("employee_gender", employee.gender);
+        localStorage.setItem("employee_birth_date", employee.birth_date);
+        localStorage.setItem("employee_cpf", employee.cpf);
+        localStorage.setItem("employee_rg", employee.rg || "");
+        localStorage.setItem("employee_photo", employee.photo || "");
 
-        const usuario = res.data.data.user_info.usuario;
-        const instancias = res.data.data.user_info.instancias || [];
+        localStorage.setItem("instances", JSON.stringify(userInfo.instances));
 
-        if (instancias.length === 1 && usuario) {
+        if (userInfo.instances.length === 1) {
           localStorage.setItem(
-            "tipo",
-            usuario.super_admin ? "super_admin" : instancias[0].tipo || ""
+            "user_type",
+            userInfo.is_superuser
+              ? "super_admin"
+              : userInfo.instances[0].user_type.toString() || ""
           );
           localStorage.setItem(
-            "id_instancia",
-            instancias[0].id.toString() || ""
+            "instance_id",
+            userInfo.instances[0].id.toString() || ""
           );
-          localStorage.setItem("instancia", instancias[0].nome || "");
-
+          localStorage.setItem(
+            "instance_name",
+            userInfo.instances[0].name || ""
+          );
           navigate("/dashboard/inicio");
         } else {
           navigate("/selecionar-escola");
@@ -74,11 +81,12 @@ const Login: FC = () => {
         setLoading(false);
       })
       .catch((err) => {
-        setSnackMessage(err.response.data.message || err.message);
+        setSnackMessage(err.response.data.detail || err.message);
         setOpenError(true);
         setLoading(false);
       });
   }
+
   return (
     <LoginContainer color={colors.main}>
       <Card

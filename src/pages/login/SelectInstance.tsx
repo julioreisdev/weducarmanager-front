@@ -16,55 +16,34 @@ import {
   sxToInputLabel,
   sxToSelect,
 } from "../../components/style";
-import { LoadingButton } from "@mui/lab";
 import { IInstance } from "../../interfaces/user.interface";
-import { UseUserInfo } from "../../hooks/useUserInfo";
 
 const SelectInstance: FC = () => {
   const [selectedId, setSelectedId] = useState(0);
   const [instances, setInstances] = useState<IInstance[]>();
   const navigate = useNavigate();
-  const { userInfo, userInfoLoading } = UseUserInfo();
 
   useEffect(() => {
-    if (userInfo?.data) {
-      setInstances(
-        userInfo.data.user_info.instancias?.filter((i) => i.tipo !== "docente")
-      );
-
-      if (userInfo.data.user_info.instancias) {
-        setSelectedId(userInfo.data.user_info.instancias[0].id);
-      }
-      if (userInfo.data.user_info.instancias) {
-        localStorage.setItem(
-          "tipo",
-          userInfo.data.user_info.usuario?.super_admin
-            ? "super_admin"
-            : userInfo.data.user_info.instancias[0]?.tipo || ""
-        );
-        localStorage.setItem(
-          "id_instancia",
-          userInfo.data.user_info.instancias[0]?.id.toString() || ""
-        );
-        localStorage.setItem(
-          "instancia",
-          userInfo.data.user_info.instancias[0]?.nome || ""
-        );
-      }
+    const localInstances: IInstance[] = JSON.parse(
+      localStorage.getItem("instances") || ""
+    );
+    if (localInstances) {
+      setInstances(localInstances);
+      setSelectedId(Number(localStorage.getItem("instance")));
     }
-  }, [userInfo, userInfoLoading]);
+  }, []);
 
   function finishLogin() {
     const selected = instances?.find((i) => i.id === selectedId);
     if (selected) {
+      const userType = localStorage.getItem("user_type");
       localStorage.setItem(
-        "tipo",
-        userInfo?.data.user_info.usuario?.super_admin
-          ? "super_admin"
-          : selected?.tipo || ""
+        "user_type",
+        userType === "super_admin" ? "super_admin" : selected.user_type || ""
       );
-      localStorage.setItem("id_instancia", selected?.id.toString() || "");
-      localStorage.setItem("instancia", selected?.nome || "");
+
+      localStorage.setItem("instance_id", selected.id.toString());
+      localStorage.setItem("instance_name", selected.name || "");
     }
 
     navigate("/dashboard/inicio");
@@ -113,7 +92,7 @@ const SelectInstance: FC = () => {
             >
               {instances?.map((i) => (
                 <MenuItem key={i.id} sx={{ color: colors.main }} value={i.id}>
-                  {i.nome}
+                  {i.name}
                 </MenuItem>
               ))}
             </Select>
@@ -133,12 +112,11 @@ const SelectInstance: FC = () => {
             >
               Voltar ao login
             </Button>
-            <LoadingButton
+            <Button
               type="submit"
               fullWidth
               size="small"
               variant="contained"
-              loading={userInfoLoading}
               sx={{
                 backgroundColor: colors.main,
                 padding: "0.5rem",
@@ -147,7 +125,7 @@ const SelectInstance: FC = () => {
               onClick={finishLogin}
             >
               Continuar
-            </LoadingButton>
+            </Button>
           </FlexRowCenterBet>
         </form>
       </Card>

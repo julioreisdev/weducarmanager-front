@@ -19,37 +19,37 @@ import {
 } from "./style";
 import colors from "../utils/colors";
 import { IInstance } from "../interfaces/user.interface";
-import { UseUserInfo } from "../hooks/useUserInfo";
 
 const Profile: FC = () => {
   const [actionsEl, setActionsEl] = useState<null | HTMLElement>(null);
   const [selectedId, setSelectedId] = useState(0);
   const [instances, setInstances] = useState<IInstance[]>();
-  const { userInfo, userInfoLoading } = UseUserInfo();
 
   useEffect(() => {
-    if (userInfo?.data) {
-      setInstances(
-        userInfo.data.user_info.instancias?.filter((i) => i.tipo !== "docente")
-      );
-
-      setSelectedId(Number(localStorage.getItem("id_instancia")));
+    const localInstances: IInstance[] = JSON.parse(
+      localStorage.getItem("instances") || ""
+    );
+    if (localInstances) {
+      setInstances(localInstances);
+      setSelectedId(Number(localStorage.getItem("instance_id")));
     }
-  }, [userInfo, userInfoLoading]);
+  }, []);
 
   function changeInstance(id: number) {
     const selected = instances?.find((i) => i.id === id);
+
     if (selected) {
+      const userType = localStorage.getItem("user_type");
       localStorage.setItem(
-        "tipo",
-        userInfo?.data.user_info.usuario?.super_admin
-          ? "super_admin"
-          : selected?.tipo || ""
+        "user_type",
+        userType === "super_admin" ? "super_admin" : selected.user_type || ""
       );
-      localStorage.setItem("id_instancia", selected?.id.toString() || "");
-      localStorage.setItem("instancia", selected?.nome || "");
+
+      localStorage.setItem("instance_id", selected.id.toString());
+      localStorage.setItem("instance_name", selected.name || "");
+
+      window.location.reload();
     }
-    window.location.reload();
   }
 
   const handleActionsOpen = (
@@ -67,7 +67,7 @@ const Profile: FC = () => {
           </IconButton>
         </Disabled>
         <FlexRowCenterBet>
-          <Box sx={{ width: "px" }}>
+          <Box>
             {" "}
             <FormControl fullWidth>
               <InputLabel
@@ -141,7 +141,7 @@ const Profile: FC = () => {
               >
                 {instances?.map((i) => (
                   <MenuItem key={i.id} sx={{ color: colors.main }} value={i.id}>
-                    {i.nome}
+                    {i.name}
                   </MenuItem>
                 ))}
               </Select>

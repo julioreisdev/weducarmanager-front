@@ -130,7 +130,7 @@ const Dashboard: React.FC<IProps> = ({ children }) => {
 
   const sidebarItemsAccess = useMemo(() => {
     return sidebarItems.filter((item) =>
-      item.users_type.some((role) => role === localStorage.getItem("tipo"))
+      item.users_type.some((role) => role === localStorage.getItem("user_type"))
     );
   }, [sidebarItems]);
 

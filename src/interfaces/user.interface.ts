@@ -1,38 +1,32 @@
-export interface IUser {
-  id: number;
-  super_admin?: number;
-  id_funcionario?: number;
-  usuario: string;
-  status: number;
-  acessos: number;
-  ultimo_acesso: string | null;
-}
-
 export interface IInstance {
   id: number;
-  tipo?: string;
-  nome: string;
+  user_type: string;
+  name: string;
 }
 
-export interface IFuncionario {
-  id_funcionario: number;
-  id_escolaridade: number;
-  nome: string;
-  sexo: string;
-  data_nascimento: string;
-  rg: string;
+export interface IEmployee {
+  employee_id: number;
+  name: string;
+  gender: string;
+  birth_date: string;
   cpf: string;
-  foto: string | null;
+  rg?: string | null;
+  photo?: string | null;
 }
 
 export interface IUserInfo {
-  usuario?: IUser;
-  token?: string;
-  funcionario?: IFuncionario;
-  instancias?: IInstance[];
+  instances: IInstance[];
+  employee: IEmployee;
+  is_active: boolean;
+  is_staff: boolean;
+  is_superuser: boolean;
+  last_access: boolean;
+  username: string;
+  id: number;
+  access_count: number;
 }
 
 export interface ILoginResponse {
-  message: string;
+  access: string;
   user_info: IUserInfo;
 }

@@ -15,7 +15,7 @@ export function UseStudents(params: IStudentFilterParams) {
   const token = localStorage.getItem("authorization") || "";
 
   const { data, error, mutate } = useSWR<TResponse>(
-    [`/students/`, params, token],
+    [`/api/v1/students/students`, params, token],
     ([url, params]) => fetcherWithParams(url, params as Record<string, unknown>)
   );
 
