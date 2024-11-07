@@ -36,6 +36,16 @@ export const FlexRowCenterBet = styled.div`
   justify-content: space-between;
 `;
 
+export const SalveDataPageButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (max-width: 840px) {
+    width: calc(100% - 60px) !important;
+  }
+`;
+
 export const FlexRowCenterWrap = styled.div`
   display: flex;
   align-items: center;
@@ -123,6 +133,39 @@ export const ActionsTableContainer = styled.div`
 
 export const BigTableActionContainer = styled.div`
   width: 180px;
+
+  @media (max-width: 840px) {
+    width: 100%;
+  }
+`;
+
+export const FormSectionContainer = styled.div`
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  @media (max-width: 840px) {
+    width: 100%;
+  }
+`;
+
+export const FormPageContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  @media (max-width: 840px) {
+    width: 100%;
+  }
+`;
+
+export const BigFormContainer = styled.div`
+  width: 280px;
 
   @media (max-width: 840px) {
     width: 100%;

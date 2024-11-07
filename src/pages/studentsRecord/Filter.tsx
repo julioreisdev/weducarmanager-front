@@ -38,8 +38,8 @@ const Filter: FC<FilterBarProps> = ({
   ethnicity,
 }) => {
   const [responsible, setResponsible] = useState("");
-  const [ethnicitySelected, setEthnicitySelected] = useState("Todos");
-  const [gender, setGender] = useState("Todos");
+  const [ethnicitySelected, setEthnicitySelected] = useState("TODOS");
+  const [gender, setGender] = useState("TODOS");
   const [pcd, setPcd] = useState(false);
   const [disturbed, setDisturbed] = useState(false);
   const [eatRestrict, setEatRestrict] = useState(false);
@@ -77,8 +77,8 @@ const Filter: FC<FilterBarProps> = ({
               }}
               sx={sxToSelect}
             >
-              <MenuItem sx={{ color: colors.main }} value={"Todos"}>
-                Todos
+              <MenuItem sx={{ color: colors.main }} value={"TODOS"}>
+                TODOS
               </MenuItem>
               {ethnicity?.map((i) => (
                 <MenuItem sx={{ color: colors.main }} value={i.id}>
@@ -105,8 +105,8 @@ const Filter: FC<FilterBarProps> = ({
               }}
               sx={sxToSelect}
             >
-              <MenuItem sx={{ color: colors.main }} value={"Todos"}>
-                Todos
+              <MenuItem sx={{ color: colors.main }} value={"TODOS"}>
+                TODOS
               </MenuItem>
               <MenuItem sx={{ color: colors.main }} value={"M"}>
                 Masculino
@@ -178,8 +178,8 @@ const Filter: FC<FilterBarProps> = ({
                   transporte_escolar: undefined,
                 });
                 setResponsible("");
-                setEthnicitySelected("Todos");
-                setGender("Todos");
+                setEthnicitySelected("TODOS");
+                setGender("TODOS");
                 setPcd(false);
                 setDisturbed(false);
                 setSchoolTransport(false);
@@ -201,10 +201,10 @@ const Filter: FC<FilterBarProps> = ({
                   ...params,
                   responsavel_nome: responsible,
                   cor:
-                    ethnicitySelected === "Todos"
+                    ethnicitySelected === "TODOS"
                       ? undefined
                       : ethnicitySelected,
-                  sexo: gender === "Todos" ? undefined : gender,
+                  sexo: gender === "TODOS" ? undefined : gender,
                   pcd: pcd ? "1" : "0",
                   disturbio: disturbed ? "1" : "0",
                   restricao_alimentar: eatRestrict ? "1" : "0",

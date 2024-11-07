@@ -36,20 +36,23 @@ import { IStudent, IStudentFilters } from "../../interfaces/students.interface";
 import Filter from "./Filter";
 import { UseEthnicity } from "../../hooks/UseEthnicity";
 import { createQueryString } from "../../utils/query";
+import StudentAdd from "./StudentAdd";
+import { UseStudentsStatus } from "../../hooks/UseStudentsStatus";
 
 const StudentsRecord: FC = () => {
   const [filterIsOpen, setFilterIsOpen] = useState(false);
   const [name, setName] = useState("");
   const [matricula, setMatricula] = useState("");
-  const [type, setType] = useState("Todos");
+  const [type, setType] = useState("TODOS");
   const [order, setOrder] = useState("A-Z");
   const [params, setParams] = useState<IStudentFilters>({
     id_instancia: localStorage.getItem("instance_id") || "",
     id_ano_letivo: localStorage.getItem("letive_year") || "1",
     order: "A-Z",
   });
-  const { students, studentsLoading } = UseStudents(params);
+  const { students, studentsLoading, updateStudents } = UseStudents(params);
   const { ethnicity, ethnicityLoading } = UseEthnicity();
+  const { studentsStatus } = UseStudentsStatus();
 
   const [student, setStudent] = useState<IStudent>();
   const [formMode, setFormMode] = useState(false);
@@ -254,28 +257,26 @@ const StudentsRecord: FC = () => {
                       setParams({
                         ...params,
                         situacao:
-                          e.target.value === "Todos"
+                          e.target.value === "TODOS"
                             ? undefined
                             : e.target.value,
                       });
                     }}
                     sx={sxToSelect}
                   >
-                    <MenuItem sx={{ color: colors.main }} value={"Todos"}>
-                      Todos
+                    <MenuItem sx={{ color: colors.main }} value={"TODOS"}>
+                      TODOS
                     </MenuItem>
-                    <MenuItem sx={{ color: colors.main }} value={"1"}>
-                      Ativo
-                    </MenuItem>
-                    <MenuItem sx={{ color: colors.main }} value={"2"}>
-                      Inativo
-                    </MenuItem>
-                    <MenuItem sx={{ color: colors.main }} value={"3"}>
-                      Transferido
-                    </MenuItem>
-                    <MenuItem sx={{ color: colors.main }} value={"4"}>
-                      Desistente
-                    </MenuItem>
+
+                    {studentsStatus?.map((i) => (
+                      <MenuItem
+                        key={i.id}
+                        sx={{ color: colors.main }}
+                        value={`${i.id}`}
+                      >
+                        {i.description}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </SmallTableActionContainer>
@@ -363,7 +364,10 @@ const StudentsRecord: FC = () => {
           </TableContainer>
         </>
       ) : (
-        <>Nova matrícula</>
+        <StudentAdd
+          update={() => updateStudents()}
+          onClose={() => setFormMode(false)}
+        />
       )}
       <PageLoading open={studentsLoading || ethnicityLoading} />
       <Filter
