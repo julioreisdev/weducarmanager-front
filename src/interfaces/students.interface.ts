@@ -9,7 +9,7 @@ export interface IStudentFilters {
   matricula?: string;
   name?: string;
   order?: string;
-  pcd?: boolean | null;
+  pcd?: string;
   responsavel_nome?: string | null;
   restricao_alimentar?: string | null;
   sexo?: string | null;

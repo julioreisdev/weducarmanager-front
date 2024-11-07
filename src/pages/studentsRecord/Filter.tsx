@@ -204,7 +204,7 @@ const Filter: FC<FilterBarProps> = ({
                       ? undefined
                       : ethnicitySelected,
                   sexo: gender === "Todos" ? undefined : gender,
-                  pcd,
+                  pcd: pcd ? "1" : "0",
                   disturbio: disturbed ? "1" : "0",
                   restricao_alimentar: eatRestrict ? "1" : "0",
                   transporte_escolar: schoolTransport ? "1" : "0",
