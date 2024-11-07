@@ -19,12 +19,14 @@ import {
 } from "./style";
 import colors from "../utils/colors";
 import { IInstance } from "../interfaces/user.interface";
+import { UseLetiveYears } from "../hooks/UseLetiveYears";
 
 const Profile: FC = () => {
   const [actionsEl, setActionsEl] = useState<null | HTMLElement>(null);
   const [selectedId, setSelectedId] = useState(0);
   const [letiveYear, setLetiveYear] = useState("1");
   const [instances, setInstances] = useState<IInstance[]>();
+  const { letiveYears } = UseLetiveYears();
 
   useEffect(() => {
     const localInstances: IInstance[] = JSON.parse(
@@ -34,8 +36,14 @@ const Profile: FC = () => {
       setInstances(localInstances);
       setSelectedId(Number(localStorage.getItem("instance_id")));
     }
-    setLetiveYear(localStorage.getItem("letive_year") || "1");
-  }, []);
+
+    if (letiveYears) {
+      setLetiveYear(
+        localStorage.getItem("letive_year") ||
+          letiveYears[0].academic_year_id.toString()
+      );
+    }
+  }, [letiveYears]);
 
   function changeInstance(id: number) {
     const selected = instances?.find((i) => i.id === id);
@@ -91,12 +99,14 @@ const Profile: FC = () => {
                 }}
                 sx={sxToSelect}
               >
-                <MenuItem sx={{ color: colors.main }} value={"1"}>
-                  2024
-                </MenuItem>
-                <MenuItem sx={{ color: colors.main }} value={"2"}>
-                  2023
-                </MenuItem>
+                {letiveYears?.map((i) => (
+                  <MenuItem
+                    sx={{ color: colors.main }}
+                    value={i.academic_year_id}
+                  >
+                    {i.description}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Box>
