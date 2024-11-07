@@ -34,6 +34,7 @@ import AppTextField from "../../components/AppTextField";
 import PageLoading from "../../components/PageLoading";
 import { IStudentFilters } from "../../interfaces/students.interface";
 import Filter from "./Filter";
+import { UseEthnicity } from "../../hooks/UseEthnicity";
 
 const StudentsRecord: FC = () => {
   const [filterIsOpen, setFilterIsOpen] = useState(false);
@@ -47,6 +48,7 @@ const StudentsRecord: FC = () => {
     order: "A-Z",
   });
   const { students, studentsLoading } = UseStudents(params);
+  const { ethnicity, ethnicityLoading } = UseEthnicity();
 
   const useDebounce = (value: string, delay: number) => {
     const [debouncedValue, setDebouncedValue] = useState(value);
@@ -283,12 +285,13 @@ const StudentsRecord: FC = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <PageLoading open={studentsLoading} />
+      <PageLoading open={studentsLoading || ethnicityLoading} />
       <Filter
         open={filterIsOpen}
         onClose={() => setFilterIsOpen(false)}
         setParams={setParams}
         params={params}
+        ethnicity={ethnicity}
       />
     </>
   );

@@ -27,11 +27,18 @@ type FilterBarProps = {
   onClose: () => void;
   setParams: React.Dispatch<React.SetStateAction<IStudentFilters>>;
   params: IStudentFilters;
+  ethnicity?: { id: number; description: string }[];
 };
 
-const Filter: FC<FilterBarProps> = ({ open, onClose, setParams, params }) => {
+const Filter: FC<FilterBarProps> = ({
+  open,
+  onClose,
+  setParams,
+  params,
+  ethnicity,
+}) => {
   const [responsible, setResponsible] = useState("");
-  const [color, setColor] = useState("Todos");
+  const [ethnicitySelected, setEthnicitySelected] = useState("Todos");
   const [gender, setGender] = useState("Todos");
   const [pcd, setPcd] = useState(false);
   const [disturbed, setDisturbed] = useState(false);
@@ -56,35 +63,28 @@ const Filter: FC<FilterBarProps> = ({ open, onClose, setParams, params }) => {
             label="Responsável"
           />
           <FormControl sx={{ marginBottom: "1rem" }} fullWidth>
-            <InputLabel sx={sxToInputLabel} id="demo-simple-select-label-color">
-              Cor
+            <InputLabel sx={sxToInputLabel} id="demo-simple-select-label-Etnia">
+              Etnia
             </InputLabel>
             <Select
               size="small"
-              labelId="demo-simple-select-label-color"
-              id="demo-simple-select-color"
-              value={color}
-              label="Cor"
+              labelId="demo-simple-select-label-Etnia"
+              id="demo-simple-select-Etnia"
+              value={ethnicitySelected}
+              label="Etnia"
               onChange={(e) => {
-                setColor(e.target.value);
+                setEthnicitySelected(e.target.value);
               }}
               sx={sxToSelect}
             >
               <MenuItem sx={{ color: colors.main }} value={"Todos"}>
                 Todos
               </MenuItem>
-              <MenuItem sx={{ color: colors.main }} value={"1"}>
-                Preto
-              </MenuItem>
-              <MenuItem sx={{ color: colors.main }} value={"2"}>
-                Pardo
-              </MenuItem>
-              <MenuItem sx={{ color: colors.main }} value={"3"}>
-                Branco
-              </MenuItem>
-              <MenuItem sx={{ color: colors.main }} value={"4"}>
-                Amarela
-              </MenuItem>
+              {ethnicity?.map((i) => (
+                <MenuItem sx={{ color: colors.main }} value={i.id}>
+                  {i.description}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <FormControl sx={{ marginBottom: "1rem" }} fullWidth>
@@ -178,7 +178,7 @@ const Filter: FC<FilterBarProps> = ({ open, onClose, setParams, params }) => {
                   transporte_escolar: undefined,
                 });
                 setResponsible("");
-                setColor("Todos");
+                setEthnicitySelected("Todos");
                 setGender("Todos");
                 setPcd(false);
                 setDisturbed(false);
@@ -199,7 +199,10 @@ const Filter: FC<FilterBarProps> = ({ open, onClose, setParams, params }) => {
                 setParams({
                   ...params,
                   responsavel_nome: responsible,
-                  cor: color === "Todos" ? undefined : color,
+                  cor:
+                    ethnicitySelected === "Todos"
+                      ? undefined
+                      : ethnicitySelected,
                   sexo: gender === "Todos" ? undefined : gender,
                   pcd,
                   disturbio: disturbed ? "1" : "0",
