@@ -94,7 +94,7 @@ export const CardFavoriteContainer = styled.div`
   width: 10vw;
   height: 120px;
 
-  @media (max-width: 720px) {
+  @media (max-width: 840px) {
     width: 120px;
   }
 `;
@@ -114,7 +114,7 @@ export const ActionsTableContainer = styled.div`
   align-items: center;
   gap: 0.5rem;
 
-  @media (max-width: 720px) {
+  @media (max-width: 840px) {
     width: 100%;
     flex-direction: column;
     gap: 1rem;
@@ -122,9 +122,9 @@ export const ActionsTableContainer = styled.div`
 `;
 
 export const BigTableActionContainer = styled.div`
-  width: 200px;
+  width: 180px;
 
-  @media (max-width: 720px) {
+  @media (max-width: 840px) {
     width: 100%;
   }
 `;
@@ -132,7 +132,7 @@ export const BigTableActionContainer = styled.div`
 export const SmallTableActionContainer = styled.div`
   width: 120px;
 
-  @media (max-width: 720px) {
+  @media (max-width: 840px) {
     width: 100%;
   }
 `;
@@ -140,10 +140,10 @@ export const SmallTableActionContainer = styled.div`
 export const HeaderActionsContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 0.5rem;
 
-  @media (max-width: 720px) {
+  @media (max-width: 840px) {
     width: 100%;
     flex-direction: column;
     gap: 1rem;
@@ -151,7 +151,8 @@ export const HeaderActionsContainer = styled.div`
 `;
 
 export const HeaderActionsContainerItem = styled.div`
-  @media (max-width: 720px) {
+  width: 180px;
+  @media (max-width: 840px) {
     width: 100%;
   }
 `;
@@ -161,7 +162,7 @@ export const StyleToBoxModal = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: window.innerWidth <= 720 ? "90%" : 350,
+  width: window.innerWidth <= 840 ? "90%" : 350,
   bgcolor: "background.paper",
   border: `2px solid ${colors.main}`,
   borderRadius: "8px",

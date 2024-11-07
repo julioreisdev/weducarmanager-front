@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import {
   ActionsTableContainer,
   BigTableActionContainer,
@@ -32,9 +32,10 @@ import colors from "../../utils/colors";
 import Icons from "../../utils/icons";
 import AppTextField from "../../components/AppTextField";
 import PageLoading from "../../components/PageLoading";
-import { IStudentFilters } from "../../interfaces/students.interface";
+import { IStudent, IStudentFilters } from "../../interfaces/students.interface";
 import Filter from "./Filter";
 import { UseEthnicity } from "../../hooks/UseEthnicity";
+import { createQueryString } from "../../utils/query";
 
 const StudentsRecord: FC = () => {
   const [filterIsOpen, setFilterIsOpen] = useState(false);
@@ -49,6 +50,9 @@ const StudentsRecord: FC = () => {
   });
   const { students, studentsLoading } = UseStudents(params);
   const { ethnicity, ethnicityLoading } = UseEthnicity();
+
+  const [student, setStudent] = useState<IStudent>();
+  const [formMode, setFormMode] = useState(false);
 
   const useDebounce = (value: string, delay: number) => {
     const [debouncedValue, setDebouncedValue] = useState(value);
@@ -76,215 +80,291 @@ const StudentsRecord: FC = () => {
     }
   }, [debouncedInputName, debouncedInputMatricula]);
 
+  const filterActive = useMemo(() => {
+    if (
+      params.cor ||
+      params.disturbio ||
+      params.responsavel_nome ||
+      params.pcd ||
+      params.restricao_alimentar ||
+      params.sexo ||
+      params.disturbio
+    ) {
+      return true;
+    }
+    return false;
+  }, [params]);
+
   return (
     <>
+      <SectionTitle>
+        Alunos - {formMode ? "Nova Matrícula" : "Matrículas"}
+      </SectionTitle>
       <HeaderActionsContainer>
-        <HeaderActionsContainerItem>
-          <SectionTitle style={{ margin: 0 }}>Matrícula</SectionTitle>
-        </HeaderActionsContainerItem>
-
         <HeaderActionsContainer>
           <HeaderActionsContainerItem>
             {" "}
-            <Button
-              size="small"
-              variant="contained"
-              sx={{
-                backgroundColor: colors.main,
-                padding: "0.5rem",
-                width: "100%",
-              }}
-              startIcon={
-                <Icons.AddIcon
-                  fontSize="small"
-                  color="inherit"
-                  sx={{ color: "#fff" }}
-                />
-              }
-            >
-              Nova Matrícula
-            </Button>
+            {formMode ? (
+              <Button
+                onClick={() => {
+                  setFormMode(false);
+                }}
+                size="small"
+                variant="contained"
+                sx={{
+                  backgroundColor: colors.main,
+                  padding: "0.5rem",
+                  width: "100%",
+                }}
+                startIcon={
+                  <Icons.ArrowBackIosNewIcon
+                    fontSize="small"
+                    color="inherit"
+                    sx={{ color: "#fff" }}
+                  />
+                }
+              >
+                Voltar
+              </Button>
+            ) : (
+              <Button
+                onClick={() => {
+                  setFormMode(true);
+                }}
+                size="small"
+                variant="contained"
+                sx={{
+                  backgroundColor: colors.main,
+                  padding: "0.5rem",
+                  width: "100%",
+                }}
+                startIcon={
+                  <Icons.AddIcon
+                    fontSize="small"
+                    color="inherit"
+                    sx={{ color: "#fff" }}
+                  />
+                }
+              >
+                Nova Matrícula
+              </Button>
+            )}
           </HeaderActionsContainerItem>
 
-          <HeaderActionsContainerItem>
-            {" "}
-            <Button
-              onClick={() => {
-                setFilterIsOpen(true);
-              }}
-              size="small"
-              variant="outlined"
-              sx={{
-                padding: "0.5rem",
-                color: colors.main,
-                borderColor: colors.main,
-                width: "100%",
-              }}
-              startIcon={
-                <Icons.FilterAltIcon
-                  fontSize="small"
-                  color="inherit"
-                  sx={{ color: colors.main }}
-                />
-              }
-            >
-              Filtros avançados
-            </Button>
-          </HeaderActionsContainerItem>
+          {!formMode ? (
+            <>
+              <HeaderActionsContainerItem>
+                {" "}
+                <Button
+                  onClick={() => {
+                    setFilterIsOpen(true);
+                  }}
+                  size="small"
+                  color="warning"
+                  variant={filterActive ? "contained" : "outlined"}
+                  sx={{
+                    padding: "0.5rem",
+
+                    width: "100%",
+                  }}
+                  startIcon={
+                    <Icons.FilterAltIcon fontSize="small" color="inherit" />
+                  }
+                >
+                  {filterActive ? "Filtros Ativos" : "Filtros Avançados"}
+                </Button>
+              </HeaderActionsContainerItem>
+              <HeaderActionsContainerItem>
+                {" "}
+                <a
+                  href={`${
+                    import.meta.env.VITE_API
+                  }/api/v1/students/students/?${createQueryString(params)}/`}
+                  target="_blank"
+                >
+                  <Button
+                    onClick={() => {}}
+                    size="small"
+                    color="info"
+                    variant="outlined"
+                    sx={{
+                      padding: "0.5rem",
+
+                      width: "100%",
+                    }}
+                    startIcon={
+                      <Icons.PrintIcon fontSize="small" color="inherit" />
+                    }
+                  >
+                    ver Relatório
+                  </Button>
+                </a>
+              </HeaderActionsContainerItem>
+            </>
+          ) : null}
         </HeaderActionsContainer>
       </HeaderActionsContainer>
-      <FlexRowCenterBet style={{ margin: "1rem 0 0.5rem 0" }}>
-        <ActionsTableContainer>
-          <BigTableActionContainer>
-            <AppTextField
-              sx={{ width: "100%" }}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              label="Nome"
-              onKeyUp={() => {
-                if (!name) {
-                  setParams({ ...params, name });
-                }
-              }}
-            />
-          </BigTableActionContainer>
-          <SmallTableActionContainer>
-            <AppTextField
-              sx={{ width: "100%" }}
-              value={matricula}
-              onChange={(e) => setMatricula(e.target.value)}
-              label="Matrícula"
-              onKeyUp={() => {
-                if (!matricula) {
-                  setParams({ ...params, matricula });
-                }
-              }}
-            />
-          </SmallTableActionContainer>
-          <SmallTableActionContainer>
-            <FormControl fullWidth>
-              <InputLabel
-                sx={sxToInputLabel}
-                id="demo-simple-select-label-tipo"
-              >
-                Situação
-              </InputLabel>
-              <Select
-                size="small"
-                labelId="demo-simple-select-label-tipo"
-                id="demo-simple-select-tipo"
-                value={type}
-                label="Situação"
-                onChange={(e) => {
-                  setType(e.target.value);
-                  setParams({
-                    ...params,
-                    situacao:
-                      e.target.value === "Todos" ? undefined : e.target.value,
-                  });
-                }}
-                sx={sxToSelect}
-              >
-                <MenuItem sx={{ color: colors.main }} value={"Todos"}>
-                  Todos
-                </MenuItem>
-                <MenuItem sx={{ color: colors.main }} value={"1"}>
-                  Ativo
-                </MenuItem>
-                <MenuItem sx={{ color: colors.main }} value={"2"}>
-                  Inativo
-                </MenuItem>
-                <MenuItem sx={{ color: colors.main }} value={"3"}>
-                  Transferido
-                </MenuItem>
-                <MenuItem sx={{ color: colors.main }} value={"4"}>
-                  Desistente
-                </MenuItem>
-              </Select>
-            </FormControl>
-          </SmallTableActionContainer>
-          <SmallTableActionContainer>
-            <FormControl fullWidth>
-              <InputLabel sx={sxToInputLabel} id="demo-simple-select-label">
-                Ordem
-              </InputLabel>
-              <Select
-                size="small"
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={order}
-                label="Ordem"
-                onChange={(e) => {
-                  setOrder(e.target.value);
-                  setParams({ ...params, order: e.target.value });
-                }}
-                sx={sxToSelect}
-              >
-                <MenuItem sx={{ color: colors.main }} value={"A-Z"}>
-                  A-Z
-                </MenuItem>
-                <MenuItem sx={{ color: colors.main }} value={"Z-A"}>
-                  Z-A
-                </MenuItem>
-              </Select>
-            </FormControl>
-          </SmallTableActionContainer>
-        </ActionsTableContainer>
-      </FlexRowCenterBet>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Matrícula</TableCell>
-              <TableCell align="center">Nome</TableCell>
-              <TableCell align="center">Responsável</TableCell>
-              <TableCell align="center">Ano</TableCell>
 
-              <TableCell align="center">Situação</TableCell>
-              <TableCell align="center">Ações</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {students?.map((student, i) => (
-              <TableRow
-                key={i}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {student?.registration}
-                </TableCell>
-                <TableCell align="center">{student?.name}</TableCell>
-                <TableCell align="center">
-                  {student?.responsible_name}
-                </TableCell>
-                <TableCell align="center">
-                  {student?.classe.description}
-                </TableCell>
-                <TableCell align="center">
-                  {student?.student_status_obj.description}
-                </TableCell>
+      {!formMode ? (
+        <>
+          <FlexRowCenterBet style={{ margin: "1rem 0 0.5rem 0" }}>
+            <ActionsTableContainer>
+              <BigTableActionContainer>
+                <AppTextField
+                  sx={{ width: "100%" }}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  label="Nome"
+                  onKeyUp={() => {
+                    if (!name) {
+                      setParams({ ...params, name });
+                    }
+                  }}
+                />
+              </BigTableActionContainer>
+              <SmallTableActionContainer>
+                <AppTextField
+                  sx={{ width: "100%" }}
+                  value={matricula}
+                  onChange={(e) => setMatricula(e.target.value)}
+                  label="Matrícula"
+                  onKeyUp={() => {
+                    if (!matricula) {
+                      setParams({ ...params, matricula });
+                    }
+                  }}
+                />
+              </SmallTableActionContainer>
+              <SmallTableActionContainer>
+                <FormControl fullWidth>
+                  <InputLabel
+                    sx={sxToInputLabel}
+                    id="demo-simple-select-label-tipo"
+                  >
+                    Situação
+                  </InputLabel>
+                  <Select
+                    size="small"
+                    labelId="demo-simple-select-label-tipo"
+                    id="demo-simple-select-tipo"
+                    value={type}
+                    label="Situação"
+                    onChange={(e) => {
+                      setType(e.target.value);
+                      setParams({
+                        ...params,
+                        situacao:
+                          e.target.value === "Todos"
+                            ? undefined
+                            : e.target.value,
+                      });
+                    }}
+                    sx={sxToSelect}
+                  >
+                    <MenuItem sx={{ color: colors.main }} value={"Todos"}>
+                      Todos
+                    </MenuItem>
+                    <MenuItem sx={{ color: colors.main }} value={"1"}>
+                      Ativo
+                    </MenuItem>
+                    <MenuItem sx={{ color: colors.main }} value={"2"}>
+                      Inativo
+                    </MenuItem>
+                    <MenuItem sx={{ color: colors.main }} value={"3"}>
+                      Transferido
+                    </MenuItem>
+                    <MenuItem sx={{ color: colors.main }} value={"4"}>
+                      Desistente
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+              </SmallTableActionContainer>
+              <SmallTableActionContainer>
+                <FormControl fullWidth>
+                  <InputLabel sx={sxToInputLabel} id="demo-simple-select-label">
+                    Ordem
+                  </InputLabel>
+                  <Select
+                    size="small"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={order}
+                    label="Ordem"
+                    onChange={(e) => {
+                      setOrder(e.target.value);
+                      setParams({ ...params, order: e.target.value });
+                    }}
+                    sx={sxToSelect}
+                  >
+                    <MenuItem sx={{ color: colors.main }} value={"A-Z"}>
+                      A-Z
+                    </MenuItem>
+                    <MenuItem sx={{ color: colors.main }} value={"Z-A"}>
+                      Z-A
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+              </SmallTableActionContainer>
+            </ActionsTableContainer>
+          </FlexRowCenterBet>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Matrícula</TableCell>
+                  <TableCell align="center">Nome</TableCell>
+                  <TableCell align="center">Responsável</TableCell>
+                  <TableCell align="center">Ano</TableCell>
 
-                <TableCell align="center">
-                  <FlexRowCenterBet style={{ justifyContent: "center" }}>
-                    <Tooltip title={"Editar aluno"}>
-                      <IconButton>
-                        <Icons.EditIcon sx={{ color: colors.main }} />
-                      </IconButton>
-                    </Tooltip>
-                    <Disabled>
-                      <Tooltip title={"Imprimir - Matrícula"}>
-                        <IconButton>
-                          <Icons.PrintIcon sx={{ color: colors.main }} />
-                        </IconButton>
-                      </Tooltip>
-                    </Disabled>
-                  </FlexRowCenterBet>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                  <TableCell align="center">Situação</TableCell>
+                  <TableCell align="center">Ações</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {students?.map((student, i) => (
+                  <TableRow
+                    key={i}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {student?.registration}
+                    </TableCell>
+                    <TableCell align="center">{student?.name}</TableCell>
+                    <TableCell align="center">
+                      {student?.responsible_name}
+                    </TableCell>
+                    <TableCell align="center">
+                      {student?.classe.description}
+                    </TableCell>
+                    <TableCell align="center">
+                      {student?.student_status_obj.description}
+                    </TableCell>
+
+                    <TableCell align="center">
+                      <FlexRowCenterBet style={{ justifyContent: "center" }}>
+                        <Tooltip title={"Editar aluno"}>
+                          <IconButton>
+                            <Icons.EditIcon sx={{ color: colors.main }} />
+                          </IconButton>
+                        </Tooltip>
+                        <Disabled>
+                          <Tooltip title={"Imprimir - Matrícula"}>
+                            <IconButton>
+                              <Icons.PrintIcon sx={{ color: colors.main }} />
+                            </IconButton>
+                          </Tooltip>
+                        </Disabled>
+                      </FlexRowCenterBet>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </>
+      ) : (
+        <>Nova matrícula</>
+      )}
       <PageLoading open={studentsLoading || ethnicityLoading} />
       <Filter
         open={filterIsOpen}

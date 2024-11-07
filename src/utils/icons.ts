@@ -36,8 +36,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import PrintIcon from "@mui/icons-material/Print";
 import CancelIcon from "@mui/icons-material/Cancel";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 const Icons = {
+  ArrowBackIosNewIcon,
   CancelIcon,
   PrintIcon,
   FilterAltIcon,

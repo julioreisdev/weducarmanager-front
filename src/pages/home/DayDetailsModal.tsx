@@ -357,7 +357,7 @@ export const Tag = styled.div`
 `;
 
 const FlexItem = styled.div`
-  @media (max-width: 720px) {
+  @media (max-width: 840px) {
     width: 100% !important;
     min-width: 100% !important;
     min-width: 100% !important;

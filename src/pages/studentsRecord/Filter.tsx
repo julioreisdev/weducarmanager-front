@@ -184,6 +184,7 @@ const Filter: FC<FilterBarProps> = ({
                 setDisturbed(false);
                 setSchoolTransport(false);
                 setEatRestrict(false);
+                onClose();
               }}
               size="small"
               variant="outlined"
@@ -209,6 +210,7 @@ const Filter: FC<FilterBarProps> = ({
                   restricao_alimentar: eatRestrict ? "1" : "0",
                   transporte_escolar: schoolTransport ? "1" : "0",
                 });
+                onClose();
               }}
               size="small"
               variant="contained"

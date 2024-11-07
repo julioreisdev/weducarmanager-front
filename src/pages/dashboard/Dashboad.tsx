@@ -125,7 +125,7 @@ const Dashboard: React.FC<IProps> = ({ children }) => {
 
   useEffect(() => {
     const width = window.screen.width;
-    setOpen(width > 720 ? true : false);
+    setOpen(width > 840 ? true : false);
   }, []);
 
   const sidebarItemsAccess = useMemo(() => {

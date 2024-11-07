@@ -81,7 +81,7 @@ const GraphsContainer = styled.div`
   justify-content: space-between;
   margin-bottom: 2rem;
 
-  @media (max-width: 720px) {
+  @media (max-width: 840px) {
     flex-direction: column;
     justify-content: center;
     gap: 4rem;
@@ -93,7 +93,7 @@ const GraphContainer = styled.div`
   height: 300px;
   padding: 0 0 1rem 0;
 
-  @media (max-width: 720px) {
+  @media (max-width: 840px) {
     width: 100%;
   }
 `;

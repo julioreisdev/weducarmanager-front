@@ -110,7 +110,7 @@ const Favorites: FC = () => {
               flexShrink: 0,
               minWidth: "10vw",
               height: "120px",
-              "@media (max-width: 720px)": {
+              "@media (max-width: 840px)": {
                 width: "120px",
               },
             }}

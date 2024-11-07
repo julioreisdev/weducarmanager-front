@@ -21,7 +21,7 @@ const FavoriteCard: FC<IProps> = ({ title, url, bgColor }) => {
           backgroundColor: bgColor,
           color: "#fff",
         },
-        "@media (max-width: 720px)": {
+        "@media (max-width: 840px)": {
           width: "120px",
         },
       }}
