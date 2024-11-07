@@ -23,6 +23,7 @@ import { IInstance } from "../interfaces/user.interface";
 const Profile: FC = () => {
   const [actionsEl, setActionsEl] = useState<null | HTMLElement>(null);
   const [selectedId, setSelectedId] = useState(0);
+  const [letiveYear, setLetiveYear] = useState("1");
   const [instances, setInstances] = useState<IInstance[]>();
 
   useEffect(() => {
@@ -33,6 +34,7 @@ const Profile: FC = () => {
       setInstances(localInstances);
       setSelectedId(Number(localStorage.getItem("instance_id")));
     }
+    setLetiveYear(localStorage.getItem("letive_year") || "1");
   }, []);
 
   function changeInstance(id: number) {
@@ -42,7 +44,7 @@ const Profile: FC = () => {
       const userType = localStorage.getItem("user_type");
       localStorage.setItem(
         "user_type",
-        userType === "super_admin" ? "super_admin" : selected.user_type || ""
+        userType === "super_user" ? "super_user" : selected.user_type || ""
       );
 
       localStorage.setItem("instance_id", selected.id.toString());
@@ -80,17 +82,20 @@ const Profile: FC = () => {
                 size="small"
                 labelId="demo-simple-select-label-year"
                 id="demo-simple-select-year"
-                value={2024}
+                value={letiveYear}
                 label="Ano"
-                onChange={() => {}}
+                onChange={(e) => {
+                  localStorage.setItem("letive_year", e.target.value);
+                  setLetiveYear(e.target.value);
+                  window.location.reload();
+                }}
                 sx={sxToSelect}
               >
-                <MenuItem
-                  key={"teste"}
-                  sx={{ color: colors.main }}
-                  value={2024}
-                >
+                <MenuItem sx={{ color: colors.main }} value={"1"}>
                   2024
+                </MenuItem>
+                <MenuItem sx={{ color: colors.main }} value={"2"}>
+                  2023
                 </MenuItem>
               </Select>
             </FormControl>

@@ -1,7 +1,8 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   ActionsTableContainer,
   BigTableActionContainer,
+  Disabled,
   FlexRowCenterBet,
   HeaderActionsContainer,
   HeaderActionsContainerItem,
@@ -30,22 +31,49 @@ import {
 import colors from "../../utils/colors";
 import Icons from "../../utils/icons";
 import AppTextField from "../../components/AppTextField";
+import PageLoading from "../../components/PageLoading";
+import { IStudentFilters } from "../../interfaces/students.interface";
+import Filter from "./Filter";
 
 const StudentsRecord: FC = () => {
+  const [filterIsOpen, setFilterIsOpen] = useState(false);
   const [name, setName] = useState("");
   const [matricula, setMatricula] = useState("");
   const [type, setType] = useState("Todos");
   const [order, setOrder] = useState("A-Z");
-  const { students } = UseStudents({
-    id_instancia: Number(localStorage.getItem("id_instancia")),
-    order,
-    id_ano_letivo: 1,
-    initial_row: 0,
-    final_row: 10,
-    situacao: type === "Todos" ? undefined : type,
-    name,
-    matricula,
+  const [params, setParams] = useState<IStudentFilters>({
+    id_instancia: localStorage.getItem("instance_id") || "",
+    id_ano_letivo: localStorage.getItem("letive_year") || "1",
+    order: "A-Z",
   });
+  const { students, studentsLoading } = UseStudents(params);
+
+  const useDebounce = (value: string, delay: number) => {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+
+      return () => {
+        clearTimeout(handler);
+      };
+    }, [value, delay]);
+    return debouncedValue;
+  };
+
+  const debouncedInputName = useDebounce(name, 500);
+  const debouncedInputMatricula = useDebounce(matricula, 500);
+
+  useEffect(() => {
+    if (debouncedInputName) {
+      setParams({ ...params, name: debouncedInputName });
+    }
+    if (debouncedInputMatricula) {
+      setParams({ ...params, matricula: debouncedInputMatricula });
+    }
+  }, [debouncedInputName, debouncedInputMatricula]);
+
   return (
     <>
       <HeaderActionsContainer>
@@ -79,6 +107,9 @@ const StudentsRecord: FC = () => {
           <HeaderActionsContainerItem>
             {" "}
             <Button
+              onClick={() => {
+                setFilterIsOpen(true);
+              }}
               size="small"
               variant="outlined"
               sx={{
@@ -104,20 +135,28 @@ const StudentsRecord: FC = () => {
         <ActionsTableContainer>
           <BigTableActionContainer>
             <AppTextField
-              required
               sx={{ width: "100%" }}
               value={name}
               onChange={(e) => setName(e.target.value)}
               label="Nome"
+              onKeyUp={() => {
+                if (!name) {
+                  setParams({ ...params, name });
+                }
+              }}
             />
           </BigTableActionContainer>
           <SmallTableActionContainer>
             <AppTextField
-              required
               sx={{ width: "100%" }}
               value={matricula}
               onChange={(e) => setMatricula(e.target.value)}
               label="Matrícula"
+              onKeyUp={() => {
+                if (!matricula) {
+                  setParams({ ...params, matricula });
+                }
+              }}
             />
           </SmallTableActionContainer>
           <SmallTableActionContainer>
@@ -136,26 +175,28 @@ const StudentsRecord: FC = () => {
                 label="Situação"
                 onChange={(e) => {
                   setType(e.target.value);
+                  setParams({
+                    ...params,
+                    situacao:
+                      e.target.value === "Todos" ? undefined : e.target.value,
+                  });
                 }}
                 sx={sxToSelect}
               >
                 <MenuItem sx={{ color: colors.main }} value={"Todos"}>
                   Todos
                 </MenuItem>
-                <MenuItem sx={{ color: colors.main }} value={"Ativo"}>
+                <MenuItem sx={{ color: colors.main }} value={"1"}>
                   Ativo
                 </MenuItem>
-                <MenuItem sx={{ color: colors.main }} value={"Inativo"}>
+                <MenuItem sx={{ color: colors.main }} value={"2"}>
                   Inativo
                 </MenuItem>
-                <MenuItem sx={{ color: colors.main }} value={"Transferido"}>
+                <MenuItem sx={{ color: colors.main }} value={"3"}>
                   Transferido
                 </MenuItem>
-                <MenuItem sx={{ color: colors.main }} value={"Desistente"}>
+                <MenuItem sx={{ color: colors.main }} value={"4"}>
                   Desistente
-                </MenuItem>
-                <MenuItem sx={{ color: colors.main }} value={"Cursando"}>
-                  Cursando
                 </MenuItem>
               </Select>
             </FormControl>
@@ -173,6 +214,7 @@ const StudentsRecord: FC = () => {
                 label="Ordem"
                 onChange={(e) => {
                   setOrder(e.target.value);
+                  setParams({ ...params, order: e.target.value });
                 }}
                 sx={sxToSelect}
               >
@@ -195,43 +237,59 @@ const StudentsRecord: FC = () => {
               <TableCell align="center">Nome</TableCell>
               <TableCell align="center">Responsável</TableCell>
               <TableCell align="center">Ano</TableCell>
-              <TableCell align="center">Turma</TableCell>
+
               <TableCell align="center">Situação</TableCell>
               <TableCell align="center">Ações</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {students?.map((student) => (
+            {students?.map((student, i) => (
               <TableRow
-                key={student.Matricula}
+                key={i}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {student.Matricula}
+                  {student?.registration}
                 </TableCell>
-                <TableCell align="center">{student.Nome}</TableCell>
-                <TableCell align="center">{student.Responsavel}</TableCell>
-                <TableCell align="center">{student.Serie}</TableCell>
-                <TableCell align="center">{student.Turma}</TableCell>
-                <TableCell align="center">{student.Situacao}</TableCell>
+                <TableCell align="center">{student?.name}</TableCell>
+                <TableCell align="center">
+                  {student?.responsible_name}
+                </TableCell>
+                <TableCell align="center">
+                  {student?.classe.description}
+                </TableCell>
+                <TableCell align="center">
+                  {student?.student_status_obj.description}
+                </TableCell>
 
                 <TableCell align="center">
-                  <Tooltip title={"Editar aluno"}>
-                    <IconButton>
-                      <Icons.EditIcon sx={{ color: colors.main }} />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={"Imprimir - Matrícula"}>
-                    <IconButton>
-                      <Icons.PrintIcon sx={{ color: colors.main }} />
-                    </IconButton>
-                  </Tooltip>
+                  <FlexRowCenterBet style={{ justifyContent: "center" }}>
+                    <Tooltip title={"Editar aluno"}>
+                      <IconButton>
+                        <Icons.EditIcon sx={{ color: colors.main }} />
+                      </IconButton>
+                    </Tooltip>
+                    <Disabled>
+                      <Tooltip title={"Imprimir - Matrícula"}>
+                        <IconButton>
+                          <Icons.PrintIcon sx={{ color: colors.main }} />
+                        </IconButton>
+                      </Tooltip>
+                    </Disabled>
+                  </FlexRowCenterBet>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+      <PageLoading open={studentsLoading} />
+      <Filter
+        open={filterIsOpen}
+        onClose={() => setFilterIsOpen(false)}
+        setParams={setParams}
+        params={params}
+      />
     </>
   );
 };

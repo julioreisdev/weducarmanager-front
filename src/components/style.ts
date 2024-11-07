@@ -155,3 +155,16 @@ export const HeaderActionsContainerItem = styled.div`
     width: 100%;
   }
 `;
+
+export const StyleToBoxModal = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: window.innerWidth <= 720 ? "90%" : 350,
+  bgcolor: "background.paper",
+  border: `2px solid ${colors.main}`,
+  borderRadius: "8px",
+  boxShadow: 24,
+  padding: "1rem",
+};

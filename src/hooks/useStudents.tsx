@@ -1,26 +1,18 @@
 import useSWR from "swr";
 import { fetcherWithParams } from "../utils/api";
-import {
-  IStudent,
-  IStudentFilterParams,
-} from "../interfaces/students.interface";
+import { IStudent, IStudentFilters } from "../interfaces/students.interface";
+import { IPaginatedResult } from "../interfaces/generic.interface";
 
-type TResponse = {
-  data: {
-    alunos: IStudent[];
-  };
-};
-
-export function UseStudents(params: IStudentFilterParams) {
+export function UseStudents(params: IStudentFilters) {
   const token = localStorage.getItem("authorization") || "";
 
-  const { data, error, mutate } = useSWR<TResponse>(
+  const { data, error, mutate } = useSWR<IPaginatedResult<IStudent>>(
     [`/api/v1/students/students`, params, token],
     ([url, params]) => fetcherWithParams(url, params as Record<string, unknown>)
   );
 
   return {
-    students: data?.data.alunos,
+    students: data?.results,
     studentsError: error,
     updateStudents: mutate,
     studentsLoading: !data && !error,

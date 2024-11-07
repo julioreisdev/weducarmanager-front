@@ -14,7 +14,11 @@ import {
   Tab,
 } from "@mui/material";
 import colors from "../../utils/colors";
-import { FlexRowCenterBet, SectionSubTitle } from "../../components/style";
+import {
+  FlexRowCenterBet,
+  SectionSubTitle,
+  StyleToBoxModal,
+} from "../../components/style";
 import styled from "styled-components";
 import Icons from "../../utils/icons";
 import AppTextField from "../../components/AppTextField";
@@ -34,20 +38,6 @@ interface IProps {
     description: string
   ) => void;
 }
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: window.innerWidth <= 720 ? "90%" : 400,
-  minHeight: "420px",
-  bgcolor: "background.paper",
-  border: `2px solid ${colors.main}`,
-  borderRadius: "8px",
-  boxShadow: 24,
-  padding: "1rem",
-};
 
 const DayDetailsModal: FC<IProps> = ({
   open,
@@ -97,7 +87,7 @@ const DayDetailsModal: FC<IProps> = ({
       }}
     >
       <Fade in={open}>
-        <Box sx={style}>
+        <Box sx={StyleToBoxModal}>
           <TabContext value={selectedTab}>
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
               {" "}

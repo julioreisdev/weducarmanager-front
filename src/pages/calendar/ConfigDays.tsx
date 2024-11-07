@@ -1,7 +1,11 @@
 import { FC, useState } from "react";
 import { Backdrop, Box, Fade, Modal } from "@mui/material";
 import colors from "../../utils/colors";
-import { FlexRowCenterBet, SectionSubTitle } from "../../components/style";
+import {
+  FlexRowCenterBet,
+  SectionSubTitle,
+  StyleToBoxModal,
+} from "../../components/style";
 import { LoadingButton } from "@mui/lab";
 import { Tag, TagContainer } from "../home/DayDetailsModal";
 import { TagType } from "../../interfaces/calendar.interface";
@@ -10,19 +14,6 @@ interface IProps {
   open: boolean;
   onClose: () => void;
 }
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: window.innerWidth <= 720 ? "90%" : 350,
-  bgcolor: "background.paper",
-  border: `2px solid ${colors.main}`,
-  borderRadius: "8px",
-  boxShadow: 24,
-  padding: "1rem",
-};
 
 const ConfigDays: FC<IProps> = ({ open, onClose }) => {
   const [start, setStart] = useState("");
@@ -43,7 +34,7 @@ const ConfigDays: FC<IProps> = ({ open, onClose }) => {
       }}
     >
       <Fade in={open}>
-        <Box sx={style}>
+        <Box sx={StyleToBoxModal}>
           <SectionSubTitle style={{ marginBottom: "1rem" }}>
             Personalizar calendário
           </SectionSubTitle>

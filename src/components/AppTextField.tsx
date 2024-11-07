@@ -12,6 +12,7 @@ interface AppTextFieldProps {
   sx?: object;
   endIcon?: React.ReactNode;
   startIcon?: React.ReactNode;
+  onKeyUp?: () => void;
 }
 
 const CustomTextField = styled(TextField)(() => ({
@@ -43,6 +44,7 @@ const AppTextField: FC<AppTextFieldProps> = ({
   sx,
   endIcon,
   startIcon,
+  onKeyUp,
 }) => {
   return (
     <CustomTextField
@@ -58,6 +60,7 @@ const AppTextField: FC<AppTextFieldProps> = ({
         startAdornment: startIcon ? <div>{startIcon}</div> : null,
         endAdornment: endIcon ? <div>{endIcon}</div> : null,
       }}
+      onKeyUp={onKeyUp}
     />
   );
 };

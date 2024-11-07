@@ -29,7 +29,7 @@ const SelectInstance: FC = () => {
     );
     if (localInstances) {
       setInstances(localInstances);
-      setSelectedId(Number(localStorage.getItem("instance")));
+      setSelectedId(localInstances[0].id);
     }
   }, []);
 
@@ -39,7 +39,7 @@ const SelectInstance: FC = () => {
       const userType = localStorage.getItem("user_type");
       localStorage.setItem(
         "user_type",
-        userType === "super_admin" ? "super_admin" : selected.user_type || ""
+        userType === "super_user" ? "super_user" : selected.user_type || ""
       );
 
       localStorage.setItem("instance_id", selected.id.toString());

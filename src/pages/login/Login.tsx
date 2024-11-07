@@ -62,7 +62,7 @@ const Login: FC = () => {
           localStorage.setItem(
             "user_type",
             userInfo.is_superuser
-              ? "super_admin"
+              ? "super_user"
               : userInfo.instances[0].user_type.toString() || ""
           );
           localStorage.setItem(
