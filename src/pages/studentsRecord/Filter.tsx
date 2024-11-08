@@ -81,7 +81,7 @@ const Filter: FC<FilterBarProps> = ({
                 TODOS
               </MenuItem>
               {ethnicity?.map((i) => (
-                <MenuItem sx={{ color: colors.main }} value={i.id}>
+                <MenuItem key={i.id} sx={{ color: colors.main }} value={i.id}>
                   {i.description}
                 </MenuItem>
               ))}
@@ -109,10 +109,10 @@ const Filter: FC<FilterBarProps> = ({
                 TODOS
               </MenuItem>
               <MenuItem sx={{ color: colors.main }} value={"M"}>
-                Masculino
+                MASCULINO
               </MenuItem>
               <MenuItem sx={{ color: colors.main }} value={"F"}>
-                Feminino
+                FEMININO
               </MenuItem>
             </Select>
           </FormControl>
@@ -125,7 +125,7 @@ const Filter: FC<FilterBarProps> = ({
                 onChange={() => setPcd((previousState) => !previousState)}
               />
             }
-            label="É PCD?"
+            label="Pessoa Com Deficiência?"
           />
           <FormControlLabel
             control={

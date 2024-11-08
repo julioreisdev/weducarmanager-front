@@ -7,7 +7,7 @@ export function UseEthnicity() {
 
   const { data, error, mutate } = useSWR<
     IPaginatedResult<{ id: number; description: string }>
-  >([`/api/v1/students/color`, token], ([url]) => fetcherWithParams(url));
+  >([`/api/v1/students/color/`, token], ([url]) => fetcherWithParams(url));
 
   return {
     ethnicity: data?.results,

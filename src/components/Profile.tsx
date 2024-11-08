@@ -101,6 +101,7 @@ const Profile: FC = () => {
               >
                 {letiveYears?.map((i) => (
                   <MenuItem
+                    key={i.academic_year_id}
                     sx={{ color: colors.main }}
                     value={i.academic_year_id}
                   >

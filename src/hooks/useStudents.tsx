@@ -7,7 +7,7 @@ export function UseStudents(params: IStudentFilters) {
   const token = localStorage.getItem("authorization") || "";
 
   const { data, error, mutate } = useSWR<IPaginatedResult<IStudent>>(
-    [`/api/v1/students/students`, params, token],
+    [`/api/v1/students/students/`, params, token],
     ([url, params]) => fetcherWithParams(url, params as Record<string, unknown>)
   );
 
