@@ -140,7 +140,7 @@ export const BigTableActionContainer = styled.div`
 `;
 
 export const FormSectionContainer = styled.div`
-  width: 300px;
+  width: 30%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -156,15 +156,23 @@ export const FormPageContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: flex-start;
+  justify-content: space-between;
   flex-wrap: wrap;
   gap: 1rem;
 
   @media (max-width: 840px) {
     width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
 export const BigFormContainer = styled.div`
+  width: 100%;
+`;
+
+export const BigFormActionContainer = styled.div`
   width: 280px;
 
   @media (max-width: 840px) {
