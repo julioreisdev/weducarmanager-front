@@ -13,6 +13,8 @@ interface AppTextFieldProps {
   endIcon?: React.ReactNode;
   startIcon?: React.ReactNode;
   onKeyUp?: () => void;
+  multiline?: boolean;
+  rows?: number;
 }
 
 const CustomTextField = styled(TextField)(() => ({
@@ -45,6 +47,8 @@ const AppTextField: FC<AppTextFieldProps> = ({
   endIcon,
   startIcon,
   onKeyUp,
+  multiline,
+  rows,
 }) => {
   return (
     <CustomTextField
@@ -61,6 +65,8 @@ const AppTextField: FC<AppTextFieldProps> = ({
         endAdornment: endIcon ? <div>{endIcon}</div> : null,
       }}
       onKeyUp={onKeyUp}
+      multiline={multiline || false}
+      rows={rows || 0}
     />
   );
 };

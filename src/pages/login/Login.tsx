@@ -12,8 +12,8 @@ const Login: FC = () => {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const [openError, setOpenError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [openError, setOpenError] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
 
   useEffect(() => {
