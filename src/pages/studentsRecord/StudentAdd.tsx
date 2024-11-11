@@ -28,10 +28,11 @@ import {
 import AppTextField from "../../components/AppTextField";
 import { UseEthnicity } from "../../hooks/UseEthnicity";
 import { UseShools } from "../../hooks/UseSchools";
-import { UseShoolYears } from "../../hooks/UseSchoolYears";
 import "react-step-progress-bar/styles.css";
 import { ProgressBar } from "react-step-progress-bar";
 import { api, getHeaders } from "../../utils/api";
+import { UseSchoolClasses } from "../../hooks/UseSchoolClasses";
+import { UseStates } from "../../hooks/UseStates";
 import { UseCities } from "../../hooks/UseCities";
 
 interface IProps {
@@ -49,18 +50,20 @@ const houses = [
 
 const StudentAdd: FC<IProps> = ({ update, onClose }) => {
   const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(3);
 
   const [name, setName] = useState("");
   const [photo, setPhoto] = useState<File | Blob | null>();
   const [ethnicitySelected, setEthnicitySelected] = useState("");
   const [schoolSelected, setSchoolSelected] = useState("");
-  const [schoolYearSelected, setSchoolYearSelected] = useState("");
+  const [schoolClassSelected, setSchoolClassSelected] = useState("");
   const { ethnicity } = UseEthnicity();
   const [gender, setGender] = useState("");
   const [birthday, setBirthday] = useState(" ");
   const { schools, schoolsLoading } = UseShools();
-  const { schoolYears } = UseShoolYears();
+  const { schoolClasses, schoolClassesLoading } = UseSchoolClasses(
+    Number(schoolSelected)
+  );
   const [censo, setCenso] = useState("");
   const [rg, setRg] = useState("");
   const [cpf, setCpf] = useState(" ");
@@ -127,10 +130,11 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
 
   const [observation, setObservation] = useState("");
 
-  const { cities } = UseCities();
-
   const [openError, setOpenError] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
+
+  const { states, statesLoading } = UseStates();
+  const { cities, citiesLoading } = UseCities(Number(responsibleAddressState));
 
   useEffect(() => {
     if (schools?.length === 1) {
@@ -143,23 +147,19 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
 
     const data = new FormData();
 
+    //1
     data.append("name", name);
     data.append("gender", gender);
     data.append("cor", ethnicitySelected);
     data.append("census_id", censo);
-    data.append("school", schoolSelected);
-    data.append("serie", schoolYearSelected);
+    //data.append("school", schoolSelected);
+    data.append("class", schoolClassSelected);
     data.append("rg", rg);
     data.append("cpf", cpf);
     data.append("birthplace", natural);
     data.append("birth_day", birthday);
-    data.append("responsible_name", responsibleName);
-    const responsible_relationship =
-      houses.find((i) => i.id === Number(responsibleHouse))?.name || "";
-    data.append("responsible_relationship", responsible_relationship);
     data.append("student_status", "1");
     data.append("instance", localStorage.getItem("instance_id") || "");
-    data.append("housing", responsibleHouse);
     if (photo) {
       data.append("photo", photo);
     }
@@ -168,6 +168,56 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
     data.append("birth_certificate_issue_date", expired);
     data.append("birth_certificate", certificate);
     data.append("birth_certificate_registry", office);
+
+    data.append("image_right_check", acceptTerms ? "1" : "0");
+    data.append("school_transport_check", useTransport ? "1" : "0");
+    data.append("disability_check", pcd ? "1" : "0");
+    data.append("disability_observations", pcdDescription);
+
+    //2
+    data.append("housing", responsibleHouse);
+    data.append("responsible_name", responsibleName);
+    const responsible_relationship =
+      houses.find((i) => i.id === Number(responsibleHouse))?.name || "";
+    data.append("responsible_relationship", responsible_relationship);
+    data.append("address", responsibleAddress);
+    data.append("neighborhood", responsibleAddressN);
+    data.append("city", responsibleAddressCity);
+    data.append("responsible_phone", responsiblePhone);
+    data.append("responsible_rg", responsibleRg);
+    data.append("responsible_cpf", responsibleCpf);
+    data.append("mother_name", motherName);
+    data.append("mother_rg", motherRg);
+    data.append("mother_cpf", motherCpf);
+    data.append("mother_phone", motherPhone);
+    data.append("father_name", fatherName);
+    data.append("father_rg", fatherRg);
+    data.append("father_cpf", fatherCpf);
+    data.append("father_phone", fatherPhone);
+
+    //3
+    data.append("allergy_check", allergy ? "1" : "0");
+    data.append("allergy_observations", allergyDescription);
+    data.append("medical_monitoring_check", hasMedicalFollowUp ? "1" : "0");
+    data.append("medical_monitoring_observations", medicalFollowUpReason);
+    data.append(
+      "physical_activity_restriction_check",
+      hasPhysicalActivityRestriction ? "1" : "0"
+    );
+    data.append(
+      "physical_activity_restriction_observations",
+      physicalActivityRestrictionDescription
+    );
+    data.append("disorder_check", hasDisturbance ? "1" : "0");
+    data.append("disorder_observations", disturbanceDescription);
+    data.append("disorder_instructions", disturbanceInstructions);
+
+    data.append("medical_monitoring_check", hasMedicalFollowUp ? "1" : "0");
+    data.append("medical_monitoring_observations", medicalFollowUpReason);
+
+    data.append("food_restriction_check", hasDietaryRestriction ? "1" : "0");
+    data.append("food_restriction_observations", dietaryRestrictionDescription);
+    data.append("observations", observation);
 
     api()
       .post(``, data, { headers: getHeaders() })
@@ -190,7 +240,7 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
         ethnicity &&
         gender &&
         schoolSelected &&
-        schoolYearSelected
+        schoolClassSelected
       );
     }
     if (step === 2) {
@@ -365,14 +415,14 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
                     sx={sxToInputLabel}
                     id="demo-simple-select-label-Escola"
                   >
-                    Escola *
+                    {schoolsLoading ? "Carregando..." : "Escola *"}
                   </InputLabel>
                   <Select
                     size="small"
                     labelId="demo-simple-select-label-Escola"
                     id="demo-simple-select-Escola"
                     value={schoolSelected}
-                    label="Escola *"
+                    label={schoolsLoading ? "Carregando..." : "Escola *"}
                     onChange={(e) => {
                       setSchoolSelected(e.target.value);
                     }}
@@ -396,30 +446,28 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
                     sx={sxToInputLabel}
                     id="demo-simple-select-label-Ano/Série"
                   >
-                    Turma *
+                    {schoolClassesLoading ? "Carregando..." : "Turma *"}
                   </InputLabel>
                   <Select
                     size="small"
                     labelId="demo-simple-select-label-Ano/Série"
                     id="demo-simple-select-Ano/Série"
-                    value={schoolYearSelected}
-                    label="Turma *"
+                    value={schoolClassSelected}
+                    label={schoolClassesLoading ? "Carregando..." : "Turma *"}
                     onChange={(e) => {
-                      setSchoolYearSelected(e.target.value);
+                      setSchoolClassSelected(e.target.value);
                     }}
                     sx={sxToSelect}
                   >
-                    {schoolYears
-                      ?.filter((i) => i.school === Number(schoolSelected))
-                      ?.map((i) => (
-                        <MenuItem
-                          key={i.id}
-                          sx={{ color: colors.main }}
-                          value={i.id}
-                        >
-                          {i.series}
-                        </MenuItem>
-                      ))}
+                    {schoolClasses?.map((i) => (
+                      <MenuItem
+                        key={i.id}
+                        sx={{ color: colors.main }}
+                        value={i.id}
+                      >
+                        {i.description}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </BigFormContainer>
@@ -574,7 +622,7 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
                       <MenuItem
                         key={i.id}
                         sx={{ color: colors.main }}
-                        value={"1"}
+                        value={i.id}
                       >
                         {i.name}
                       </MenuItem>
@@ -597,7 +645,7 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
                   sx={{ width: "100%" }}
                   value={responsibleAddress}
                   onChange={(e) => setResponsibleAddress(e.target.value)}
-                  label="Endereço do responsável"
+                  label="Endereço"
                 />
               </BigFormContainer>
               <BigFormContainer>
@@ -609,25 +657,70 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
                   label="Bairro"
                 />
               </BigFormContainer>
+              <BigFormContainer>
+                <FormControl fullWidth>
+                  <InputLabel
+                    sx={sxToInputLabel}
+                    id="demo-simple-select-label-House"
+                  >
+                    {statesLoading ? "Carregando..." : "Estado *"}
+                  </InputLabel>
+                  <Select
+                    size="small"
+                    labelId="demo-simple-select-label-House"
+                    id="demo-simple-select-House"
+                    value={responsibleAddressState}
+                    label={statesLoading ? "Carregando..." : "Estado *"}
+                    onChange={(e) => {
+                      setResponsibleAddressState(e.target.value);
+                    }}
+                    sx={sxToSelect}
+                  >
+                    {states?.map((i) => (
+                      <MenuItem
+                        key={i.id}
+                        sx={{ color: colors.main }}
+                        value={i.id}
+                      >
+                        {i.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </BigFormContainer>
 
               <BigFormContainer>
-                <AppTextField
-                  required
-                  sx={{ width: "100%" }}
-                  value={responsibleAddressCity}
-                  onChange={(e) => setResponsibleAddressCity(e.target.value)}
-                  label="Cidade"
-                />
+                <FormControl fullWidth>
+                  <InputLabel
+                    sx={sxToInputLabel}
+                    id="demo-simple-select-label-House"
+                  >
+                    {citiesLoading ? "Carregando..." : "Cidade *"}
+                  </InputLabel>
+                  <Select
+                    size="small"
+                    labelId="demo-simple-select-label-House"
+                    id="demo-simple-select-House"
+                    value={responsibleAddressCity}
+                    label={statesLoading ? "Carregando..." : "Cidade *"}
+                    onChange={(e) => {
+                      setResponsibleAddressCity(e.target.value);
+                    }}
+                    sx={sxToSelect}
+                  >
+                    {cities?.map((i) => (
+                      <MenuItem
+                        key={i.id}
+                        sx={{ color: colors.main }}
+                        value={"1"}
+                      >
+                        {i.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </BigFormContainer>
-              <BigFormContainer>
-                <AppTextField
-                  required
-                  sx={{ width: "100%" }}
-                  value={responsibleAddressState}
-                  onChange={(e) => setResponsibleAddressState(e.target.value)}
-                  label="Estado"
-                />
-              </BigFormContainer>
+
               <BigFormContainer>
                 <AppTextField
                   sx={{ width: "100%" }}
@@ -687,6 +780,8 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
                   label="CPF da mãe"
                 />
               </BigFormContainer>
+            </FormSectionContainer>
+            <FormSectionContainer>
               <BigFormContainer>
                 <AppTextField
                   sx={{ width: "100%" }}
@@ -695,8 +790,6 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
                   label="Nome do pai"
                 />
               </BigFormContainer>
-            </FormSectionContainer>
-            <FormSectionContainer>
               <BigFormContainer>
                 <AppTextField
                   sx={{ width: "100%" }}

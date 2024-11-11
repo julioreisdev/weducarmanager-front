@@ -21,3 +21,14 @@ export interface ISchoolYears {
   school: number;
   curriculum_matrix: number;
 }
+
+export interface ISchoolClass {
+  id: number;
+  description: string;
+  start_time: string;
+  end_time: string;
+  eja: number;
+  shift: number;
+  school_year: number;
+  room: number;
+}
