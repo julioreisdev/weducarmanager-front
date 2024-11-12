@@ -48,7 +48,7 @@ const Login: FC = () => {
         localStorage.setItem("access_count", userInfo.access_count.toString());
 
         const employee = userInfo.employee;
-        localStorage.setItem("employee_id", employee.employee_id.toString());
+        localStorage.setItem("employee_id", employee.id.toString());
         localStorage.setItem("employee_name", employee.name);
         localStorage.setItem("employee_gender", employee.gender);
         localStorage.setItem("employee_birth_date", employee.birth_date);

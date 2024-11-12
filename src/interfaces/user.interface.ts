@@ -5,7 +5,7 @@ export interface IInstance {
 }
 
 export interface IEmployee {
-  employee_id: number;
+  id: number;
   name: string;
   gender: string;
   birth_date: string;
