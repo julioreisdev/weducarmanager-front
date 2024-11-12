@@ -9,6 +9,13 @@ const sidebarItems = [
     users_type: ["gestor", "admin", "super_user"],
   },
   {
+    id: "teacher",
+    name: "Docência",
+    route: "docencia",
+    icon: Icons.CastForEducationIcon,
+    users_type: ["docente", "gestor", "admin", "super_user"],
+  },
+  {
     id: "adm",
     name: "Administrativo",
     route: "adm",

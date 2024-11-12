@@ -37,6 +37,7 @@ const App: FC = () => {
                 <Routes>
                   <Route path="/inicio" element={<Home />} />
                   <Route path="/adm" element={<Admin />} />
+                  <Route path="/docencia" element={<>Área da Docência</>} />
                   <Route path="/calendario" element={<Calendar />} />
                   <Route path="/escola" element={<School />} />
                   <Route path="/alunos" element={<Students />} />
