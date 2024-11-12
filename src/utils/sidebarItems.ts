@@ -2,21 +2,21 @@ import Icons from "./icons";
 
 const sidebarItems = [
   {
-    id: 1,
+    id: "init",
     name: "Página Inicial",
     route: "inicio",
     icon: Icons.DonutSmallIcon,
     users_type: ["gestor", "admin", "super_user"],
   },
   {
-    id: 2,
+    id: "adm",
     name: "Administrativo",
     route: "adm",
     icon: Icons.ManageAccountsIcon,
     users_type: ["admin", "super_user"],
   },
   {
-    id: 3,
+    id: "calendar",
     name: "Calendário",
     route: "calendario",
     icon: Icons.EditCalendarIcon,
@@ -24,7 +24,7 @@ const sidebarItems = [
   },
 
   {
-    id: 4,
+    id: "school",
     name: "Escola",
     route: "escola",
     icon: Icons.BusinessIcon,
@@ -32,7 +32,7 @@ const sidebarItems = [
   },
 
   {
-    id: 5,
+    id: "student",
     name: "Alunos",
     route: "alunos",
     icon: Icons.GroupsIcon,
@@ -40,7 +40,7 @@ const sidebarItems = [
   },
 
   {
-    id: 6,
+    id: "suport",
     name: "Suporte",
     route: "suporte",
     icon: Icons.SupportAgentIcon,

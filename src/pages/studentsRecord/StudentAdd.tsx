@@ -50,7 +50,7 @@ const houses = [
 
 const StudentAdd: FC<IProps> = ({ update, onClose }) => {
   const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(1);
 
   const [name, setName] = useState("");
   const [photo, setPhoto] = useState<File | Blob | null>();

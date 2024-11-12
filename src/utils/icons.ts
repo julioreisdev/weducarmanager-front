@@ -39,8 +39,10 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CheckIcon from "@mui/icons-material/Check";
+import CastForEducationIcon from "@mui/icons-material/CastForEducation";
 
 const Icons = {
+  CastForEducationIcon,
   ArrowForwardIosIcon,
   CheckIcon,
   ArrowBackIosNewIcon,

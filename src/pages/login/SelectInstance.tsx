@@ -20,14 +20,14 @@ import { IInstance } from "../../interfaces/user.interface";
 
 const SelectInstance: FC = () => {
   const [selectedId, setSelectedId] = useState(0);
-  const [instances, setInstances] = useState<IInstance[]>();
+  const [instances, setInstances] = useState<IInstance[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const localInstances: IInstance[] = JSON.parse(
       localStorage.getItem("instances") || ""
     );
-    if (localInstances) {
+    if (localInstances.length) {
       setInstances(localInstances);
       setSelectedId(localInstances[0].id);
     }
