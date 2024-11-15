@@ -3,7 +3,7 @@ import { fetcherWithParams } from "../utils/api";
 import { IPaginatedResult } from "../interfaces/generic.interface";
 import { ISchoolYears } from "../interfaces/school.interface";
 
-export function UseShoolYears() {
+export function UseSchoolYears() {
   const token = localStorage.getItem("authorization") || "";
 
   const { data, error, mutate } = useSWR<IPaginatedResult<ISchoolYears>>(

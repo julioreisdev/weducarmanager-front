@@ -1,18 +1,17 @@
 import useSWR from "swr";
 import { fetcherWithParams } from "../utils/api";
-import { IPaginatedResult } from "../interfaces/generic.interface";
 import { ISchool } from "../interfaces/school.interface";
 
-export function UseShools() {
+export function UseSchools(params: { id_instancia: string }) {
   const token = localStorage.getItem("authorization") || "";
 
-  const { data, error, mutate } = useSWR<IPaginatedResult<ISchool>>(
-    [`/api/v1/administration/school/`, token],
-    ([url]) => fetcherWithParams(url)
+  const { data, error, mutate } = useSWR<ISchool[]>(
+    [`/api/v1/administration/school/`, params, token],
+    ([url, params]) => fetcherWithParams(url, params as Record<string, unknown>)
   );
 
   return {
-    schools: data?.results,
+    schools: data,
     schoolsError: error,
     updateSchools: mutate,
     schoolsLoading: !data && !error,

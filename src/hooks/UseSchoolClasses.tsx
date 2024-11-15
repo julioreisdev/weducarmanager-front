@@ -1,20 +1,26 @@
 import useSWR from "swr";
 import { fetcherWithParams } from "../utils/api";
-import { IPaginatedResult } from "../interfaces/generic.interface";
 import { ISchoolClass } from "../interfaces/school.interface";
 
-export function UseSchoolClasses(id: number) {
+export function UseSchoolClasses(params: {
+  id_instancia: string;
+  academic_year_id: string;
+  school_id: string;
+}) {
   const token = localStorage.getItem("authorization") || "";
 
-  const shouldFetch = id !== 0;
+  const shouldFetch =
+    params.id_instancia !== "" &&
+    params.academic_year_id !== "" &&
+    params.school_id !== "";
 
-  const { data, error, mutate } = useSWR<IPaginatedResult<ISchoolClass>>(
-    shouldFetch ? [`/api/v1/management/classes/school/${id}/`, token] : null,
-    ([url]) => fetcherWithParams(url)
+  const { data, error, mutate } = useSWR<ISchoolClass[]>(
+    shouldFetch ? [`/api/v1/management/classes/`, params, token] : null,
+    ([url, params]) => fetcherWithParams(url, params as Record<string, unknown>)
   );
 
   return {
-    schoolClasses: data?.results,
+    schoolClasses: data,
     schoolClassesError: error,
     updateClassesYears: mutate,
     schoolClassesLoading: !data && !error && shouldFetch,

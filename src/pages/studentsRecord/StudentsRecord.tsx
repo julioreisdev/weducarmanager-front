@@ -38,6 +38,7 @@ import { UseEthnicity } from "../../hooks/UseEthnicity";
 import { createQueryString } from "../../utils/query";
 import StudentAdd from "./StudentAdd";
 import { UseStudentsStatus } from "../../hooks/UseStudentsStatus";
+import StudentEdit from "./StudentEdit";
 
 const StudentsRecord: FC = () => {
   const [filterIsOpen, setFilterIsOpen] = useState(false);
@@ -56,6 +57,7 @@ const StudentsRecord: FC = () => {
 
   const [student, setStudent] = useState<IStudent>();
   const [formMode, setFormMode] = useState(false);
+  const [formEditMode, setFormEditMode] = useState(false);
 
   const useDebounce = (value: string, delay: number) => {
     const [debouncedValue, setDebouncedValue] = useState(value);
@@ -101,30 +103,36 @@ const StudentsRecord: FC = () => {
   return (
     <>
       <SectionTitle>
-        Alunos - {formMode ? "Nova Matrícula" : "Matrículas"}
+        Alunos -{" "}
+        {formMode
+          ? "Nova Matrícula"
+          : formEditMode
+          ? "Nome do aluno"
+          : "Matrículas"}
       </SectionTitle>
       <HeaderActionsContainer>
         <HeaderActionsContainer>
           <HeaderActionsContainerItem>
             {" "}
-            {formMode ? (
+            {formMode || formEditMode ? (
               <Button
                 onClick={() => {
-                  setFormMode(false);
+                  if (formEditMode) {
+                    setFormEditMode(false);
+                  } else {
+                    setFormMode(false);
+                  }
                 }}
                 size="small"
-                variant="contained"
+                variant="outlined"
                 sx={{
-                  backgroundColor: colors.main,
                   padding: "0.5rem",
                   width: "100%",
+                  borderColor: colors.main,
+                  color: colors.main,
                 }}
                 startIcon={
-                  <Icons.ArrowBackIosNewIcon
-                    fontSize="small"
-                    color="inherit"
-                    sx={{ color: "#fff" }}
-                  />
+                  <Icons.ArrowBackIosNewIcon fontSize="small" color="inherit" />
                 }
               >
                 Voltar
@@ -154,7 +162,7 @@ const StudentsRecord: FC = () => {
             )}
           </HeaderActionsContainerItem>
 
-          {!formMode ? (
+          {!formMode && !formEditMode ? (
             <>
               <HeaderActionsContainerItem>
                 {" "}
@@ -208,7 +216,18 @@ const StudentsRecord: FC = () => {
         </HeaderActionsContainer>
       </HeaderActionsContainer>
 
-      {!formMode ? (
+      {formMode ? (
+        <StudentAdd
+          update={() => updateStudents()}
+          onClose={() => setFormMode(false)}
+        />
+      ) : formEditMode ? (
+        <StudentEdit
+          update={() => updateStudents()}
+          onClose={() => setFormEditMode(false)}
+          student={student}
+        />
+      ) : (
         <>
           <FlexRowCenterBet style={{ margin: "1rem 0 0.5rem 0" }}>
             <ActionsTableContainer>
@@ -322,28 +341,34 @@ const StudentsRecord: FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {students?.map((student, i) => (
+                {students?.map((item, i) => (
                   <TableRow
                     key={i}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {student?.registration}
+                      {item?.registration}
                     </TableCell>
-                    <TableCell align="center">{student?.name}</TableCell>
+                    <TableCell align="center">{item?.name}</TableCell>
                     <TableCell align="center">
-                      {student?.responsible_name}
-                    </TableCell>
-                    <TableCell align="center">
-                      {student?.classe.description}
+                      {item?.responsible_name}
                     </TableCell>
                     <TableCell align="center">
-                      {student?.student_status_obj.description}
+                      {item?.classe.description}
+                    </TableCell>
+                    <TableCell align="center">
+                      {item?.student_status_obj.description}
                     </TableCell>
 
                     <TableCell align="center">
                       <FlexRowCenterBet style={{ justifyContent: "center" }}>
-                        <Tooltip title={"Editar aluno"}>
+                        <Tooltip
+                          onClick={() => {
+                            setStudent(item);
+                            setFormEditMode(true);
+                          }}
+                          title={"Editar aluno"}
+                        >
                           <IconButton>
                             <Icons.EditIcon sx={{ color: colors.main }} />
                           </IconButton>
@@ -363,11 +388,6 @@ const StudentsRecord: FC = () => {
             </Table>
           </TableContainer>
         </>
-      ) : (
-        <StudentAdd
-          update={() => updateStudents()}
-          onClose={() => setFormMode(false)}
-        />
       )}
       <PageLoading open={studentsLoading || ethnicityLoading} />
       <Filter

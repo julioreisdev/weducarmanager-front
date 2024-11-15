@@ -36,13 +36,16 @@ import { UseStates } from "../../hooks/UseStates";
 import { UseCities } from "../../hooks/UseCities";
 import { removeMaskCaracters } from "../../utils/masks";
 import { UseHousings } from "../../hooks/UseHousings";
+import { IStudent } from "../../interfaces/students.interface";
+import { UseSchoolYears } from "../../hooks/UseSchoolYears";
 
 interface IProps {
   update: () => void;
   onClose: () => void;
+  student?: IStudent;
 }
 
-const StudentAdd: FC<IProps> = ({ update, onClose }) => {
+const StudentEdit: FC<IProps> = ({ update, onClose, student }) => {
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
 
@@ -137,12 +140,97 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
   const { cities, citiesLoading } = UseCities(Number(responsibleAddressState));
 
   const { housings } = UseHousings();
+  const { schoolYears } = UseSchoolYears();
 
   useEffect(() => {
     if (schools?.length === 1) {
       setSchoolSelected(schools[0].id.toString());
     }
   }, [schoolsLoading]);
+
+  useEffect(() => {
+    if (student) {
+      // 1
+      setName(student.name);
+      setBirthday(student.birth_date);
+      setEthnicitySelected(student.color.toString() || "");
+      setGender(student.gender);
+      setCenso(student.census_id?.toString() || "");
+
+      if (schoolYears) {
+        setSchoolSelected(
+          schoolYears
+            ?.find((i) => i.id === student.classe.school_year.id)
+            ?.school.toString() || ""
+        );
+      }
+      setSchoolClassSelected(student.classe.id.toString());
+      setPhoto(
+        student.photo ? new File([student.photo], "student-photo") : null
+      );
+      setNatural(student.birthplace || "");
+      setCpf(student.cpf || "");
+      setRg(student.rg || "");
+      setNis(student.nis_number?.toString() || "");
+      setSus(student.sus_number?.toString() || "");
+      setCertificate(student.birth_certificate || "");
+      setExpired(student.birth_certificate_issue_date || " ");
+      setOffice(student.birth_certificate_registry || "");
+      setUseTransport(student.school_transport_check ? true : false);
+      setAcceptTerms(student.image_right_check ? true : false);
+      setPcd(student.disability_check ? true : false);
+      setPcdDescription(student.disability_observations || "");
+
+      // 2
+
+      setResponsibleHouse(student.housing.toString() || "");
+      setResponsibleName(student.responsible_name || "");
+      setResponsibleAddress(student.address || "");
+      setResponsibleAddressN(student.neighborhood || "");
+
+      // cidade e estado
+
+      setResponsiblePhone(student.responsible_phone || "");
+      setResponsibleCpf(student.responsible_cpf || "");
+      setResponsibleRg(student.responsible_rg || "");
+      setMotherName(student.mother_name || "");
+      setMotherPhone(student.mother_phone || "");
+      setMotherCpf(student.mother_cpf || "");
+      setMotherRg(student.mother_rg || "");
+      setFatherName(student.father_name || "");
+      setFatherPhone(student.father_phone || "");
+      setFatherCpf(student.father_cpf || "");
+      setFatherRg(student.father_rg || "");
+
+      // 3
+      setAllergy(student.allergy_check ? true : false);
+      setAllergyDescription(student.allergy_observations || "");
+
+      setHasMedicalFollowUp(student.medical_monitoring_check ? true : false);
+      setMedicalFollowUpReason(student.medical_monitoring_observations || "");
+
+      setHasDietaryRestriction(student.food_restriction_check ? true : false);
+      setDietaryRestrictionDescription(
+        student.food_restriction_observations || ""
+      );
+
+      setHasPhysicalActivityRestriction(
+        student.physical_activity_restriction_check ? true : false
+      );
+      setPhysicalActivityRestrictionDescription(
+        student.physical_activity_restriction_observations || ""
+      );
+
+      setHasDisturbance(student.disability_check ? true : false);
+      setDisturbanceDescription(student.disorder_observations || "");
+      setDisturbanceInstructions(student.disorder_instructions || "");
+
+      setUsesContinuousMedication(student.medication_check ? true : false);
+      setContinuousMedicationDescription(student.medication_observations || "");
+
+      setObservation(student.observations || "");
+    }
+  }, [student, schoolYears]);
 
   function createStudent() {
     setLoading(true);
@@ -264,7 +352,15 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
     appendIfValid("observations", observation);
 
     api()
-      .post(`api/v1/students/students/`, data, { headers: getHeaders() })
+      .put(
+        `api/v1/students/students/${
+          student?.registration
+        }/?id_instancia=${localStorage.getItem("instance_id")}`,
+        data,
+        {
+          headers: getHeaders(),
+        }
+      )
       .then(() => {
         update();
         setLoading(false);
@@ -332,13 +428,7 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
           paddingBottom: "40px",
         }}
       >
-        <div style={{ width: "100%", marginBottom: "1.5rem" }}>
-          <ProgressBar
-            width={"100%"}
-            percent={(step * 100) / 3}
-            filledBackground="linear-gradient(to right, #c8afff, #682EE3)"
-          />
-        </div>
+        <div style={{ width: "100%", marginBottom: "1.5rem" }}></div>
         {step === 1 ? (
           <FormPageContainer>
             <FormSectionContainer>
@@ -1221,4 +1311,4 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
   );
 };
 
-export default StudentAdd;
+export default StudentEdit;

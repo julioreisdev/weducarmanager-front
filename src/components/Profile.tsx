@@ -26,7 +26,7 @@ const Profile: FC = () => {
   const [selectedId, setSelectedId] = useState(0);
   const [letiveYear, setLetiveYear] = useState("1");
   const [instances, setInstances] = useState<IInstance[]>();
-  const { letiveYears } = UseLetiveYears();
+  const { letiveYears, letiveYearsLoading } = UseLetiveYears();
 
   useEffect(() => {
     const localInstances: IInstance[] = JSON.parse(
@@ -37,13 +37,18 @@ const Profile: FC = () => {
       setSelectedId(Number(localStorage.getItem("instance_id")));
     }
 
-    if (letiveYears) {
+    if (letiveYears?.length) {
       setLetiveYear(
         localStorage.getItem("letive_year") ||
           letiveYears[0].academic_year_id.toString()
       );
+      localStorage.setItem(
+        "letive_year",
+        localStorage.getItem("letive_year") ||
+          letiveYears[0].academic_year_id.toString()
+      );
     }
-  }, [letiveYears]);
+  }, [letiveYears, letiveYearsLoading]);
 
   function changeInstance(id: number) {
     const selected = instances?.find((i) => i.id === id);

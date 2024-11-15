@@ -82,6 +82,7 @@ export interface IStudent {
   responsible_cpf?: string | null;
   responsible_rg?: string | null;
   rg?: string | null;
+  cpf?: string | null;
   student_status: number;
   student_status_obj: {
     id: number;
@@ -89,4 +90,5 @@ export interface IStudent {
   };
   sus_number?: string | null;
   school_transport_check: number;
+  observations?: string | null;
 }
