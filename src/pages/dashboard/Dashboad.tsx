@@ -184,7 +184,13 @@ const Dashboard: React.FC<IProps> = ({ children }) => {
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
-        <div className="sidebar">
+        <div
+          style={{
+            backgroundColor: colors.main,
+            height: "100%",
+            color: "#fff",
+          }}
+        >
           <DrawerHeader>
             <div
               style={{
