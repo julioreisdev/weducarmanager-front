@@ -117,15 +117,23 @@ const Dashboard: React.FC<IProps> = ({ children }) => {
 
   const handleDrawerOpen = () => {
     setOpen(true);
+    localStorage.setItem("sidebar_open", "true");
   };
 
   const handleDrawerClose = () => {
     setOpen(false);
+    localStorage.setItem("sidebar_open", "false");
   };
 
   useEffect(() => {
     const width = window.screen.width;
-    setOpen(width > 840 ? true : false);
+    if (localStorage.getItem("sidebar_open") === "true") {
+      setOpen(true);
+    } else if (localStorage.getItem("sidebar_open") === "false") {
+      setOpen(false);
+    } else {
+      setOpen(width > 840 ? true : false);
+    }
   }, []);
 
   const sidebarItemsAccess = useMemo(() => {
