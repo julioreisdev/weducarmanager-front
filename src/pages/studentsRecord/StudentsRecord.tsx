@@ -25,6 +25,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
   Tooltip,
 } from "@mui/material";
@@ -46,14 +47,33 @@ const StudentsRecord: FC = () => {
   const [matricula, setMatricula] = useState("");
   const [type, setType] = useState("TODOS");
   const [order, setOrder] = useState("A-Z");
+
   const [params, setParams] = useState<IStudentFilters>({
     id_instancia: localStorage.getItem("instance_id") || "",
     id_ano_letivo: localStorage.getItem("letive_year") || "1",
     order: "A-Z",
+    page: 1,
   });
   const { students, studentsLoading, updateStudents } = UseStudents(params);
   const { ethnicity, ethnicityLoading } = UseEthnicity();
   const { studentsStatus } = UseStudentsStatus();
+
+  const [page, setPage] = useState<number>(0);
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+    setParams((prev) => {
+      return {
+        ...prev,
+        page: newPage + 1,
+      };
+    });
+  };
+
+  const totalItems = students?.count || 0;
+  const currentPage = totalItems > 0 ? page : 0;
 
   const [student, setStudent] = useState<IStudent>();
   const [formMode, setFormMode] = useState(false);
@@ -107,7 +127,7 @@ const StudentsRecord: FC = () => {
         {formMode
           ? "Nova Matrícula"
           : formEditMode
-          ? "Nome do aluno"
+          ? student?.name
           : "Matrículas"}
       </SectionTitle>
       <HeaderActionsContainer>
@@ -328,6 +348,18 @@ const StudentsRecord: FC = () => {
             </ActionsTableContainer>
           </FlexRowCenterBet>
           <TableContainer component={Paper}>
+            <TablePagination
+              rowsPerPageOptions={[]}
+              component="div"
+              count={totalItems}
+              rowsPerPage={10}
+              page={currentPage}
+              onPageChange={handleChangePage}
+              labelRowsPerPage={"Alunos por página"}
+              labelDisplayedRows={({ from, to, count }) =>
+                `${from}-${to} de ${count}`
+              }
+            />
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -341,7 +373,7 @@ const StudentsRecord: FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {students?.map((item, i) => (
+                {students?.results?.map((item, i) => (
                   <TableRow
                     key={i}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

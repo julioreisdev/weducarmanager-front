@@ -12,7 +12,7 @@ export function UseStudents(params: IStudentFilters) {
   );
 
   return {
-    students: data?.results,
+    students: data,
     studentsError: error,
     updateStudents: mutate,
     studentsLoading: !data && !error,

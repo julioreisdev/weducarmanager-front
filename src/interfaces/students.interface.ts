@@ -15,6 +15,7 @@ export interface IStudentFilters {
   sexo?: string | null;
   situacao?: string | null;
   transporte_escolar?: string | null;
+  page?: number;
 }
 
 export interface IStudent {
