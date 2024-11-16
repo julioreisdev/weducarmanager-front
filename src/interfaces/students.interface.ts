@@ -2,9 +2,9 @@ export interface IStudentFilters {
   cor?: string | null;
   disturbio?: string | null;
   final_row?: string;
-  id_ano_letivo: string;
+  id_ano_letivo?: string;
   id_escola?: string | null;
-  id_instancia: string;
+  id_instancia?: string;
   initial_row?: string;
   matricula?: string;
   name?: string;

@@ -12,6 +12,7 @@ import Support from "./pages/support/Support";
 import Students from "./pages/students/Students";
 import School from "./pages/school/School";
 import StudentsRecord from "./pages/studentsRecord/StudentsRecord";
+import StudentsReRecord from "./pages/studentsRecord/StudentReRecord";
 
 const App: FC = () => {
   return (
@@ -47,7 +48,7 @@ const App: FC = () => {
                   />
                   <Route
                     path="/alunos/rematricula"
-                    element={<>Rematrícula</>}
+                    element={<StudentsReRecord />}
                   />
                   <Route path="/suporte" element={<Support />} />
                 </Routes>
