@@ -24,6 +24,7 @@ export interface IUserInfo {
   username: string;
   id: number;
   access_count: number;
+  current_year?: number;
 }
 
 export interface ILoginResponse {

@@ -37,18 +37,8 @@ const Profile: FC = () => {
       setSelectedId(Number(localStorage.getItem("instance_id")));
     }
 
-    if (letiveYears?.length) {
-      setLetiveYear(
-        localStorage.getItem("letive_year") ||
-          letiveYears[0].academic_year_id.toString()
-      );
-      localStorage.setItem(
-        "letive_year",
-        localStorage.getItem("letive_year") ||
-          letiveYears[0].academic_year_id.toString()
-      );
-    }
-  }, [letiveYears, letiveYearsLoading]);
+    setLetiveYear(localStorage.getItem("letive_year") || "");
+  }, [letiveYearsLoading]);
 
   function changeInstance(id: number) {
     const selected = instances?.find((i) => i.id === id);
@@ -110,7 +100,7 @@ const Profile: FC = () => {
                     sx={{ color: colors.main }}
                     value={i.academic_year_id}
                   >
-                    {i.description}
+                    {i.academic_year_id}
                   </MenuItem>
                 ))}
               </Select>

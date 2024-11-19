@@ -36,6 +36,7 @@ import { UseStates } from "../../hooks/UseStates";
 import { UseCities } from "../../hooks/UseCities";
 import { removeMaskCaracters } from "../../utils/masks";
 import { UseHousings } from "../../hooks/UseHousings";
+import { UseStudentsStatus } from "../../hooks/UseStudentsStatus";
 
 interface IProps {
   update: () => void;
@@ -65,6 +66,7 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
   });
 
   const [censo, setCenso] = useState("");
+  const [status, setStatus] = useState("1");
   const [rg, setRg] = useState("");
   const [cpf, setCpf] = useState("");
   const [natural, setNatural] = useState("");
@@ -135,6 +137,7 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
 
   const { states, statesLoading } = UseStates();
   const { cities, citiesLoading } = UseCities(Number(responsibleAddressState));
+  const { studentsStatus } = UseStudentsStatus();
 
   const { housings } = UseHousings();
 
@@ -165,12 +168,12 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
     appendIfValid("cpf", removeMaskCaracters(cpf));
     appendIfValid("birthplace", natural);
     appendIfValid("birth_date", birthday);
-    data.append("student_status", "1");
+    data.append("student_status_id", status);
     data.append("instance", localStorage.getItem("instance_id") || "");
 
-    if (photo) {
-      data.append("photo", photo);
-    }
+    // if (photo) {
+    //   data.append("photo", photo);
+    // }
 
     appendIfValid("sus_number", sus);
     appendIfValid("sis_number", nis);
@@ -603,6 +606,41 @@ const StudentAdd: FC<IProps> = ({ update, onClose }) => {
                   onChange={(e) => setOffice(e.target.value)}
                   label="Cartório de registro"
                 />
+              </BigFormContainer>
+              <BigFormContainer>
+                <FormControl fullWidth>
+                  <InputLabel
+                    sx={sxToInputLabel}
+                    id="demo-simple-select-label-tipo"
+                  >
+                    Situação
+                  </InputLabel>
+                  <Select
+                    size="small"
+                    labelId="demo-simple-select-label-tipo"
+                    id="demo-simple-select-tipo"
+                    value={status}
+                    label="Situação"
+                    onChange={(e) => {
+                      setStatus(e.target.value);
+                    }}
+                    sx={sxToSelect}
+                  >
+                    <MenuItem sx={{ color: colors.main }} value={"TODOS"}>
+                      TODOS
+                    </MenuItem>
+
+                    {studentsStatus?.map((i) => (
+                      <MenuItem
+                        key={i.id}
+                        sx={{ color: colors.main }}
+                        value={`${i.id}`}
+                      >
+                        {i.description}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </BigFormContainer>
               <BigFormContainer>
                 <FormControlLabel

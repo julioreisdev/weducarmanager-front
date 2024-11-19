@@ -29,7 +29,6 @@ import AppTextField from "../../components/AppTextField";
 import { UseEthnicity } from "../../hooks/UseEthnicity";
 import { UseSchools } from "../../hooks/UseSchools";
 import "react-step-progress-bar/styles.css";
-import { ProgressBar } from "react-step-progress-bar";
 import { api, getHeaders } from "../../utils/api";
 import { UseSchoolClasses } from "../../hooks/UseSchoolClasses";
 import { UseStates } from "../../hooks/UseStates";
@@ -38,6 +37,7 @@ import { removeMaskCaracters } from "../../utils/masks";
 import { UseHousings } from "../../hooks/UseHousings";
 import { IStudent } from "../../interfaces/students.interface";
 import { UseSchoolYears } from "../../hooks/UseSchoolYears";
+import { UseStudentsStatus } from "../../hooks/UseStudentsStatus";
 
 interface IProps {
   update: () => void;
@@ -67,6 +67,7 @@ const StudentEdit: FC<IProps> = ({ update, onClose, student }) => {
     school_id: schoolSelected,
   });
 
+  const [status, setStatus] = useState("1");
   const [censo, setCenso] = useState("");
   const [rg, setRg] = useState("");
   const [cpf, setCpf] = useState("");
@@ -138,6 +139,7 @@ const StudentEdit: FC<IProps> = ({ update, onClose, student }) => {
 
   const { states, statesLoading } = UseStates();
   const { cities, citiesLoading } = UseCities(Number(responsibleAddressState));
+  const { studentsStatus } = UseStudentsStatus();
 
   const { housings } = UseHousings();
   const { schoolYears } = UseSchoolYears();
@@ -157,17 +159,19 @@ const StudentEdit: FC<IProps> = ({ update, onClose, student }) => {
       setGender(student.gender);
       setCenso(student.census_id?.toString() || "");
 
-      if (schoolYears) {
+      if (schoolYears && student.classe) {
         setSchoolSelected(
           schoolYears
             ?.find((i) => i.id === student.classe.school_year.id)
             ?.school.toString() || ""
         );
       }
-      setSchoolClassSelected(student.classe.id.toString());
-      setPhoto(
-        student.photo ? new File([student.photo], "student-photo") : null
+      setSchoolClassSelected(
+        student.classe ? student.classe.id.toString() : ""
       );
+      // setPhoto(
+      //   student.photo ? new File([student.photo], "student-photo") : null
+      // );
       setNatural(student.birthplace || "");
       setCpf(student.cpf || "");
       setRg(student.rg || "");
@@ -180,6 +184,7 @@ const StudentEdit: FC<IProps> = ({ update, onClose, student }) => {
       setAcceptTerms(student.image_right_check ? true : false);
       setPcd(student.disability_check ? true : false);
       setPcdDescription(student.disability_observations || "");
+      setStatus(student.classe ? student.classe.status.id.toString() : "1");
 
       // 2
 
@@ -188,7 +193,8 @@ const StudentEdit: FC<IProps> = ({ update, onClose, student }) => {
       setResponsibleAddress(student.address || "");
       setResponsibleAddressN(student.neighborhood || "");
 
-      // cidade e estado
+      setResponsibleAddressCity(student.city_obj.id.toString() || "");
+      setResponsibleAddressState(student.city_obj.state.id.toString() || "");
 
       setResponsiblePhone(student.responsible_phone || "");
       setResponsibleCpf(student.responsible_cpf || "");
@@ -253,12 +259,12 @@ const StudentEdit: FC<IProps> = ({ update, onClose, student }) => {
     appendIfValid("cpf", removeMaskCaracters(cpf));
     appendIfValid("birthplace", natural);
     appendIfValid("birth_date", birthday);
-    data.append("student_status", "1");
+    data.append("student_status_id", status);
     data.append("instance", localStorage.getItem("instance_id") || "");
 
-    if (photo) {
-      data.append("photo", photo);
-    }
+    // if (photo) {
+    //   data.append("photo", photo);
+    // }
 
     appendIfValid("sus_number", sus);
     appendIfValid("sis_number", nis);
@@ -693,6 +699,37 @@ const StudentEdit: FC<IProps> = ({ update, onClose, student }) => {
                   onChange={(e) => setOffice(e.target.value)}
                   label="Cartório de registro"
                 />
+              </BigFormContainer>
+              <BigFormContainer>
+                <FormControl fullWidth>
+                  <InputLabel
+                    sx={sxToInputLabel}
+                    id="demo-simple-select-label-tipo"
+                  >
+                    Situação
+                  </InputLabel>
+                  <Select
+                    size="small"
+                    labelId="demo-simple-select-label-tipo"
+                    id="demo-simple-select-tipo"
+                    value={status}
+                    label="Situação"
+                    onChange={(e) => {
+                      setStatus(e.target.value);
+                    }}
+                    sx={sxToSelect}
+                  >
+                    {studentsStatus?.map((i) => (
+                      <MenuItem
+                        key={i.id}
+                        sx={{ color: colors.main }}
+                        value={`${i.id}`}
+                      >
+                        {i.description}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </BigFormContainer>
               <BigFormContainer>
                 <FormControlLabel

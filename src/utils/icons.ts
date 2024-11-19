@@ -40,8 +40,10 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CheckIcon from "@mui/icons-material/Check";
 import CastForEducationIcon from "@mui/icons-material/CastForEducation";
+import FactCheckIcon from "@mui/icons-material/FactCheck";
 
 const Icons = {
+  FactCheckIcon,
   CastForEducationIcon,
   ArrowForwardIosIcon,
   CheckIcon,

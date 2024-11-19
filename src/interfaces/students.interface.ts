@@ -33,9 +33,22 @@ export interface IStudent {
   address?: string | null;
   neighborhood?: string | null;
   city: number;
+  city_obj: {
+    id: number;
+    name: string;
+    state: {
+      id: number;
+      uf: string;
+      name: string;
+    };
+  };
   classe: {
     id: number;
     description: string;
+    status: {
+      id: number;
+      description: string;
+    };
     school_year: {
       id: number;
       description: string;

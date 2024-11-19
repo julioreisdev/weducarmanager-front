@@ -386,10 +386,10 @@ const StudentsRecord: FC = () => {
                       {item?.responsible_name}
                     </TableCell>
                     <TableCell align="center">
-                      {item?.classe.description}
+                      {item?.classe ? item.classe.description : ""}
                     </TableCell>
                     <TableCell align="center">
-                      {item?.student_status_obj.description}
+                      {item?.classe ? item?.classe.status.description : ""}
                     </TableCell>
 
                     <TableCell align="center">

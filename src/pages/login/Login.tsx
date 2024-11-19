@@ -34,6 +34,10 @@ const Login: FC = () => {
 
         const userInfo = res.data.user_info;
         localStorage.setItem("user_id", userInfo.id.toString());
+        localStorage.setItem(
+          "letive_year",
+          userInfo.current_year?.toString() || "2024"
+        );
         localStorage.setItem("username", userInfo.username);
         localStorage.setItem("is_active", JSON.stringify(userInfo.is_active));
         localStorage.setItem("is_staff", JSON.stringify(userInfo.is_staff));

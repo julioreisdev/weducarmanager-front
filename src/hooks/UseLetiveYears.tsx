@@ -6,7 +6,7 @@ export function UseLetiveYears() {
   const token = localStorage.getItem("authorization") || "";
 
   const { data, error, mutate } = useSWR<
-    IPaginatedResult<{ academic_year_id: number; description: string }>
+    IPaginatedResult<{ academic_year_id: number }>
   >([`/api/v1/academics/academic-years/`, token], ([url]) =>
     fetcherWithParams(url)
   );
