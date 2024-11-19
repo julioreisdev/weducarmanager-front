@@ -63,6 +63,7 @@ const StudentsReRecord: FC = () => {
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
+    console.log(event);
     setPage(newPage);
     setParams((prev) => {
       return {

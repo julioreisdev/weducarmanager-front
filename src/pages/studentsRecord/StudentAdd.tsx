@@ -29,6 +29,7 @@ import AppTextField from "../../components/AppTextField";
 import { UseEthnicity } from "../../hooks/UseEthnicity";
 import { UseSchools } from "../../hooks/UseSchools";
 import "react-step-progress-bar/styles.css";
+// @ts-expect-error types not exists
 import { ProgressBar } from "react-step-progress-bar";
 import { api, getHeaders } from "../../utils/api";
 import { UseSchoolClasses } from "../../hooks/UseSchoolClasses";
